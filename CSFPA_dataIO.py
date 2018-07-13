@@ -267,7 +267,7 @@ def PixDataIO():
     #np.savetxt(f, (pixarr), delimiter='    ', fmt='%.5e')   
     for i in xrange(992):
         
-        tesnum = str("%i" % TESnum[i])
+        tesnum = str("%003i" % TESnum[i])
         xpos = str("%.5f" % PixCenX[i])
         ypos = str("%.5f" % PixCenY[i])
         value = str("%.5f" % IntT[i])      
