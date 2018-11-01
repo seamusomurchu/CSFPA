@@ -4,7 +4,13 @@ import math
 
 
 def getXYcoords(f, vtxs):
-    data = np.loadtxt(f, skiprows=1)
+	
+#must check state of header from MODAL,GRASP,qbdataio etc.
+    if f.endswith((".qb")):
+        data = np.loadtxt(f, skiprows=9)
+    else:
+        data = np.loadtxt(f, skiprows=1)
+		
     xycoords = np.array(data[:,2:4])
     
     cnti = 0

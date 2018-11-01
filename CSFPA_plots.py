@@ -39,7 +39,7 @@ def IntensityXPlot():
     plt.axis('equal')   
     plt.title("CF1 Source as Bolometers Intensity X dir",fontsize=10)
     plt.subplot(122)
-    plt.scatter(xycoords[:,0],xycoords[:,1], c=Ix/max(Ix), cmap='plasma',marker='.')
+    plt.scatter(xycoords[:,0],xycoords[:,1], c=Ix/max(Ix), cmap='jet',marker='.')
     plt.axis([-0.06, 0.06, -0.06, 0.06])
     plt.axis('equal')    
     plt.title("CF1 Source - MODAL",fontsize=10)    
