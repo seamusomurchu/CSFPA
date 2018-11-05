@@ -32,13 +32,13 @@ def IntensityXPlot():
     ######################IntensityX plot
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars()
     
-    plt.figure()
-    plt.subplot(121)
-    plt.scatter(PixCenX*1000,PixCenY*1000, c=IntX/max(IntX), s=8, cmap='plasma',marker='s') 
+    plt.figure(facecolor='xkcd:pale green')
+    plt.subplot(121, facecolor='#d8dcd6')#xkcd reference for this colour
+    plt.scatter(PixCenX*1000,PixCenY*1000, c=IntX/max(IntX), s=25, cmap='jet',marker='s') 
     plt.axis([-0.06, 0.06, -0.06, 0.06])
     plt.axis('equal')   
     plt.title("CF1 Source as Bolometers Intensity X dir",fontsize=10)
-    plt.subplot(122)
+    plt.subplot(122, facecolor='#d8dcd6')#xkcd reference for this colour
     plt.scatter(xycoords[:,0],xycoords[:,1], c=Ix/max(Ix), cmap='jet',marker='.')
     plt.axis([-0.06, 0.06, -0.06, 0.06])
     plt.axis('equal')    

@@ -6,11 +6,13 @@ import math
 def getXYcoords(f, vtxs):
 	
 #must check state of header from MODAL,GRASP,qbdataio etc.
-    if f.endswith((".qb")):
-        data = np.loadtxt(f, skiprows=9)
-    else:
-        data = np.loadtxt(f, skiprows=1)
+    #if f.endswith((".qb")): #okay not necessary for pandas version of wbdataio
+    data = np.loadtxt(f, skiprows=1)
+   # else:
+    #    data = np.loadtxt(f, skiprows=1)
 		
+    #print "data info = ", data[0], data.shape
+	
     xycoords = np.array(data[:,2:4])
     
     cnti = 0
@@ -60,13 +62,19 @@ def getXYcoords(f, vtxs):
             
             #x y are modal data points
             #x1,y1,x2,y2 are detector geometry points
-            x = j[0]/1000
-            y = j[1]/1000
+            if f.endswith((".qb")):
+				x = j[0]
+				y = j[1]
+            else:				
+                x = j[0]/1000
+                y = j[1]/1000
             x1 = i[0,0]
             y1 = i[0,1]
             x2 = i[2,0]
             y2 = i[2,1]
     
+			#test if x and x1 are same unit
+            #print "xandys", x, y, x1, y1
 
             if x >= x2 and x <= x1 and y >= y2 and y <= y1:
                 #find mags and phases in pixel area
@@ -161,6 +169,9 @@ def dataAnalysis(dat):
     """
     #Cop DAT array and normalise data in datamod
     datmod = dat
+	
+	#ignore DIV zero errors
+    np.seterr(divide='ignore', invalid='ignore')
 
     #account for "sampling/aliasing"
     datmod[:,0] = datmod[:,0]/datmod[:,8]
