@@ -215,7 +215,7 @@ def SaveVars(MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr,
     #    with open('objs.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     #        pickle.dump([MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT], f)
     #    return
-    f=open('FPA_objs.pkl', 'wb')
+    f=open('FPA_objs_'+filename+'.pkl', 'wb')
     pickle.dump(MagXarr,f)
     pickle.dump(PhaXarr,f)
     pickle.dump(ReXarr,f)
@@ -238,12 +238,12 @@ def SaveVars(MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr,
     
     return
     
-def RetrieveVars(): 
+def RetrieveVars(plotfname): 
     # Getting back the objects:
     #    with open('objs.pkl') as f:  # Python 3: open(..., 'rb')
     #        MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT = pickle.load(f)
     #    return MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT
-    f=open('FPA_objs.pkl','rb')
+    f=open(plotfname,'rb')
     MagXarr=pickle.load(f)
     PhaXarr=pickle.load(f)
     ReXarr=pickle.load(f)
