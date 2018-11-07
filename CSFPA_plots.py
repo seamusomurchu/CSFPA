@@ -6,8 +6,8 @@ import pickle #ignore warning, seems like RetrieveVars uses it
 
 
 #def TotalIntensityPlot(PixCenX,PixCenY,IntT,xycoords,IT):
-def TotalIntensityPlot():
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars()
+def TotalIntensityPlot(plotfname):
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     ######################Total Intensity plot - Normalised
     
     plt.figure()

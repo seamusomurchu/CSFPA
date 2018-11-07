@@ -52,10 +52,10 @@ def getXYcoords(f, vtxs):
     for i in vtxs:
         cnti = cnti + 1
         cntj = 0
-        pixcenx = (i[0,0] + i[2,0]) / 2  #have to use vtxs here
+        #pixcenx = (i[0,0] + i[2,0]) / 2  #have to use vtxs here
         #print "pixcenx = ", pixcenx, type(pixcenx), type(PixCenX)
         #PixCenX.append(pixcenx)
-        pixceny = (i[0,1] + i[2,1]) / 2
+        #pixceny = (i[0,1] + i[2,1]) / 2
         #PixCenY.append(pixceny)
         
         for j in xycoords:
@@ -145,6 +145,8 @@ def getXYcoords(f, vtxs):
         vtxcntarr = np.append(vtxcntarr,vtxcnt)
         vtxcnt = 0 
         #Pixel centers as array
+        pixcenx = (x1 + x2) / 2		
+        pixceny = (y1 + y2) / 2
         PixCenX = np.append(PixCenX,pixcenx)
         PixCenY = np.append(PixCenY,pixceny)
         #progperc = (float(cnti)/len(vtxs) ) *100
