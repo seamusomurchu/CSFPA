@@ -42,8 +42,8 @@ def getXYcoords(f, vtxs):
     ImYlist = np.array([])
     ImYarr = np.array([])
     #pixel centers
-    PixCenX = []
-    PixCenY = []
+    PixCenX = np.array([])
+    PixCenY = np.array([])
     
     vtxcntarr = ([])
     #count number of data points per pixel for analysis/normalisation
@@ -54,9 +54,9 @@ def getXYcoords(f, vtxs):
         cntj = 0
         pixcenx = (i[0,0] + i[2,0]) / 2  #have to use vtxs here
         #print "pixcenx = ", pixcenx, type(pixcenx), type(PixCenX)
-        PixCenX.append(pixcenx)
+        #PixCenX.append(pixcenx)
         pixceny = (i[0,1] + i[2,1]) / 2
-        PixCenY.append(pixceny)
+        #PixCenY.append(pixceny)
         
         for j in xycoords:
             
@@ -144,9 +144,9 @@ def getXYcoords(f, vtxs):
         #data points per pixel counter
         vtxcntarr = np.append(vtxcntarr,vtxcnt)
         vtxcnt = 0 
-    #Pixel centers as array
-    PixCenX = np.asarray(PixCenX)
-    PixCenY = np.asarray(PixCenY)
+        #Pixel centers as array
+        PixCenX = np.append(PixCenX,pixcenx)
+        PixCenY = np.append(PixCenY,pixceny)
         #progperc = (float(cnti)/len(vtxs) ) *100
         #print "vertex loop percent estimate = ", progperc, "%"#, "file = ",f 
         
