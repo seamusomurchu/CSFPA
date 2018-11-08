@@ -72,22 +72,24 @@ def IntensityYPlot():
     
     return
 
-def MagXPlot():
+def MagXPlot(plotfname, filename):
     #load saved variables
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars()
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     #load raw data from file
     dataCF = np.loadtxt(filename, skiprows=1) 
-    plt.figure()
-    plt.subplot(121)
-    plt.scatter(PixCenX*1000,PixCenY*1000, c=MagXarr/max(MagXarr), s=8, cmap='plasma',marker='s')   
-    plt.axis([-0.06, 0.06, -0.06, 0.06])
+    plt.figure(facecolor='xkcd:pale green')
+    plt.subplot(121, facecolor='#d8dcd6')
+    plt.scatter(PixCenX,PixCenY, c=MagXarr/max(MagXarr), s=25, cmap='jet',marker='s')   
+    plt.axis([-0.055, 0.055, -0.055, 0.055])
     plt.axis('equal')    
-    plt.title("Source as Bolometers",fontsize=10)
-    plt.subplot(122)
-    plt.scatter(xycoords[:,0],xycoords[:,1], c=dataCF[:,4]/(max(dataCF[:,4])), cmap='plasma',marker='.')
-    plt.axis([-0.06, 0.06, -0.06, 0.06])
+    plt.title("{} as Bolometers".format(plotfname),fontsize=10)
+    plt.subplot(122, facecolor='#d8dcd6')
+    plt.scatter(xycoords[:,0],xycoords[:,1], c=dataCF[:,4]/(max(dataCF[:,4])), cmap='jet',marker='.')
+    #plt.scatter(xycoords[:,0],xycoords[:,1], c=MagXarr/(max(MagXarr)), cmap='plasma',marker='.')
+    plt.plot(0, 0, 'o', mfc='none',markersize=57,color='black')
+    plt.axis([-0.055, 0.055, -0.055, 0.055])
     plt.axis('equal')    
-    plt.title("Source - MODAL",fontsize=10)    
+    plt.title("Source - {}".format(filename),fontsize=10)    
     plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
     cax = plt.axes([0.85, 0.1, 0.05, 0.8])
     plt.colorbar(cax=cax,label="Mag X")    
