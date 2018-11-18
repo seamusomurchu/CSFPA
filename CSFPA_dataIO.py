@@ -294,4 +294,12 @@ def PixDataIO():
     f.close()
     
     return
+
+def IntensityCalc(mag,pha,re,im):
+	#so here i have to decide if i want to do this in magpha or reim
+	#there is a nice ocw.mit acoustics reference from 2004 for this
+	#do the calculatoin
+	#return intensity X or Y
+	#calculate total intensity back in main
+	return intarr
     
