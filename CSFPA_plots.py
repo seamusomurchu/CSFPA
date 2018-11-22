@@ -121,9 +121,9 @@ def MagYPlot(plotfname, filename):
     
     return
 
-def PhaXPlot():
+def PhaXPlot(plotfname):
     #Double check this result. Looks quite odd pattern on TESs
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars()
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     #load raw data from file
     dataCF = np.loadtxt(filename, skiprows=1) 
     ############################### plot normalised data ################
@@ -191,6 +191,40 @@ def FPComparisonPlot(pkl1,pkl2):
 	plt.subplot(223)
 	comp = IntX1 - IntX2
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s')
+	plt.axis([-60, 60, -60, 60])
+	plt.axis('equal')
+	plt.title("Data Comparison",fontsize=10)	
+	
+	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
+	cax = plt.axes([0.85, 0.1, 0.05, 0.8])
+	plt.colorbar(cax=cax,label="Comparison")    
+	plt.show()	
+	
+	return
+
+def FPComparisonPlotRAW(pkl1,pkl2):
+	#initially going to hardcode for intensity or magnitude
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
+	IntX1 = Ix/max(Ix)
+
+	plt.figure()
+	plt.subplot(221)
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX1, cmap='jet',marker='s')
+	plt.axis([-60, 60, -60, 60])
+	plt.axis('equal')
+	plt.title("pkl1",fontsize=10)
+	
+	plt.subplot(222)
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
+	IntX2 = Ix/max(Ix)
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX2, cmap='jet',marker='s')
+	plt.axis([-60, 60, -60, 60])
+	plt.axis('equal')
+	plt.title("pkl2",fontsize=10)
+	
+	plt.subplot(223)
+	comp = IntX1 - IntX2
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
