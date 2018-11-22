@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import os
 import timeit
-from CSFPA_dataIO import getXYcoords, dataIO, dataAnalysis, SaveVars
+from CSFPA_dataIO import getXYcoords, dataIO, dataAnalysis, SaveVars, IntensityCalc, IntensityCalcRAW
 
 def MainProg(filename): 
     start = timeit.default_timer()
@@ -44,14 +44,16 @@ def MainProg(filename):
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY = getXYcoords(filename,vtxs) 
 
     vtxcounter = np.vstack((vtxcounter,vtxcntarr))
-        
-    IntX = (ReXarr*ReXarr) + (ImXarr*ImXarr)
-    IntY = (ReYarr*ReYarr) + (ImYarr*ImYarr)
-    IntT = IntX[:] + IntY[:]
-    
     vtxcounter = vtxcounter.T
     vtxcounter = vtxcounter[:,1:3]
-    
+        
+    #IntX = (ReXarr*ReXarr) + (ImXarr*ImXarr)
+    #IntY = (ReYarr*ReYarr) + (ImYarr*ImYarr)
+    #IntT = IntX[:] + IntY[:]
+	
+	#outsourcing intensity calc to dataIO
+    IntX, IntY, IntT = IntensityCalc(MagXarr, PhaXarr, MagYarr, PhaYarr)  
+    print "intensity tests", IntX.shape   
     #use this order for a header
     #dat = np.hstack((MagXmat,vtxcounter,ReXmat,ImXmat,ReYmat,ImYmat))
     dat = np.vstack((MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT))
@@ -70,9 +72,12 @@ def MainProg(filename):
     xycoords = np.array(dataCF1[:,2:4])
     
     #plotting RAW INTENSITY
-    Ix = (dataCF1[:,4]*np.cos(dataCF1[:,5]))**2 + (dataCF1[:,4]*np.sin(dataCF1[:,5]))**2
-    Iy = (dataCF1[:,6]*np.cos(dataCF1[:,7]))**2 + (dataCF1[:,6]*np.sin(dataCF1[:,7]))**2
-    IT = Ix + Iy
+    #Ix = (dataCF1[:,4]*np.cos(dataCF1[:,5]))**2 + (dataCF1[:,4]*np.sin(dataCF1[:,5]))**2
+    #Iy = (dataCF1[:,6]*np.cos(dataCF1[:,7]))**2 + (dataCF1[:,6]*np.sin(dataCF1[:,7]))**2
+    #IT = Ix + Iy
+	
+    Ix, Iy, IT = IntensityCalcRAW(filename)
+	
     #testing setting zeros to NANs
     ITnans = [np.nan if x == 0 else x for x in IT]
     ITnans = np.asarray(ITnans)
@@ -84,6 +89,6 @@ def MainProg(filename):
     stop = timeit.default_timer()
     time = stop - start
     seconds = (time - int(time)) * 60
-    print time, "m", seconds, "s"
+    print time/60, "m", seconds, "s"
     
     return

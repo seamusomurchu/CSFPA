@@ -7,9 +7,9 @@ def getXYcoords(f, vtxs):
 	
 #must check state of header from MODAL,GRASP,qbdataio etc.
     #if f.endswith((".qb")): #okay not necessary for pandas version of wbdataio
+    #  data = np.loadtxt(f, skiprows=9)
+    #else:
     data = np.loadtxt(f, skiprows=1)
-   # else:
-    #    data = np.loadtxt(f, skiprows=1)
 		
     #print "data info = ", data[0], data.shape
 	
@@ -295,11 +295,25 @@ def PixDataIO():
     
     return
 
-def IntensityCalc(mag,pha,re,im):
+def IntensityCalc(MagXarr, PhaXarr, MagYarr, PhaYarr):
 	#so here i have to decide if i want to do this in magpha or reim
 	#there is a nice ocw.mit acoustics reference from 2004 for this
 	#do the calculatoin
 	#return intensity X or Y
 	#calculate total intensity back in main
-	return intarr
-    
+	
+	IntX = MagXarr*np.cos(PhaXarr)**2 + MagXarr*np.sin(PhaXarr)**2
+	IntY = MagYarr*np.cos(PhaYarr)**2 + MagYarr*np.sin(PhaYarr)**2
+	IntT = IntX[:] + IntY[:]
+	
+	return IntX, IntY, IntT
+   
+def IntensityCalcRAW(filename):
+	#Do intensity calculation raw on file data .qb or .dat
+    data = np.loadtxt(filename, skiprows=1)
+	
+    Ix = (data[:,4]*np.cos(data[:,5]))**2 + (data[:,4]*np.sin(data[:,5]))**2
+    Iy = (data[:,6]*np.cos(data[:,7]))**2 + (data[:,6]*np.sin(data[:,7]))**2
+    IT = Ix[:] + Iy[:]
+	
+    return Ix, Iy, IT

@@ -72,7 +72,7 @@ def IntensityYPlot():
     
     return
 
-def MagXPlot(plotfname, filename):
+def MagXPlot(plotfname):
     #load saved variables
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     #load raw data from file
