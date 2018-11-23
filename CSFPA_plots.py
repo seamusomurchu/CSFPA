@@ -10,17 +10,17 @@ def TotalIntensityPlot(plotfname):
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     ######################Total Intensity plot - Normalised
     
-    plt.figure()
-    plt.subplot(121)
+    plt.figure(facecolor='xkcd:pale green')
+    plt.subplot(121, facecolor='#d8dcd6')
     plt.scatter(PixCenX*1000,PixCenY*1000, c=IntT[:]/max(IntT[:]), cmap='jet',marker='s')
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
-    plt.title("CF1 Source as Bolometers Total Instensity",fontsize=10)
-    plt.subplot(122)
+    plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
+    plt.subplot(122, facecolor='#d8dcd6')
     plt.scatter(xycoords[:,0],xycoords[:,1], c=IT[:]/max(IT[:]), cmap='jet',marker='.')
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
-    plt.title("CF1 Source - MODAL",fontsize=10)
+    plt.title("RAW - {}".format(filename),fontsize=10)
     plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
     cax = plt.axes([0.85, 0.1, 0.05, 0.8])
     plt.colorbar(cax=cax,label="Intensity")
@@ -173,23 +173,35 @@ def FPComparisonPlot(pkl1,pkl2):
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
 	IntX1 = IntX/max(IntX)
 
-	plt.figure()
-	plt.subplot(221)
+	plt.figure(facecolor='xkcd:pale green')
+	plt.subplot(221, facecolor='#d8dcd6')
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=IntX1, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
-	plt.title("pkl1",fontsize=10)
+	plt.title("FP - {}".format(pkl1),fontsize=10)
 	
-	plt.subplot(222)
+	plt.subplot(222, facecolor='#d8dcd6')
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
 	IntX2 = IntX/max(IntX)
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=IntX2, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
-	plt.title("pkl2",fontsize=10)
+	plt.title("FP - {}".format(pkl2),fontsize=10)
 	
-	plt.subplot(223)
+	plt.subplot(223, facecolor='#d8dcd6')
 	comp = IntX1 - IntX2
+	
+	#okay so here i am finding all of the outer pixels and setting to zero
+	#this allows me to analyse valid pixels between grasp and modal
+	#maybe i should delete these elements of the array to make data analysis easier
+	for i in range(len(PixCenX)):
+		if np.sqrt(PixCenX[i]**2 + PixCenY[i]**2) > 0.05:	
+			comp[i] = 0
+			PixCenX[i] = 0.05
+			PixCenY[i] = 0.05
+			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
+			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
+
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
@@ -224,7 +236,7 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	
 	plt.subplot(223)
 	comp = IntX1 - IntX2
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='jet',marker='s')
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='jet',marker='s')			
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
