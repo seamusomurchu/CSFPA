@@ -207,6 +207,13 @@ def FPComparisonPlot(pkl1,pkl2):
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
 	
+	plt.subplot(224, facecolor='#d8dcd6')
+    #do histogram here	
+	#binarr = [-0.35, -0.25, -0.15, -0.05, 0.05, 0.015]
+	binarr = [-0.325, -0.275, -0.225, -0.175, -0.125, -0.075, -0.025, 0.025, 0.075, 0.125]
+	n, bins, patches = plt.hist(comp, bins=binarr)
+	print "hist data", n, bins, patches
+			 
 	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
 	cax = plt.axes([0.85, 0.1, 0.05, 0.8])
 	plt.colorbar(cax=cax,label="Comparison")    
