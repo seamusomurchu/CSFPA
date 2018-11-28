@@ -168,10 +168,10 @@ def PhaYPlot():
     
     return
 
-def IntXComparisonPlot(pkl1,pkl2):
+def IntXCompPlot(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	IntX1 = IntX/max(IntX)
+	IntX1 = IntY/max(IntY) #NB cross and co polar are mixed up here between MODAL and GRASP
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -214,11 +214,11 @@ def IntXComparisonPlot(pkl1,pkl2):
 	#binarr = [-0.35, -0.25, -0.15, -0.05, 0.05, 0.015]
 	#binarr = [-0.325, -0.275, -0.225, -0.175, -0.125, -0.075, -0.025, 0.025, 0.075, 0.125]
 	#binarr = [-32.5, -27.5, -22.5, -17.5, -12.5, -7.5, -2.5, 2.5, 7.5, 12.5]
-	binarr = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25]
+	#binarr = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25]
 	comp = np.abs(comp)
 	analysisarray = np.abs(analysisarray)
 	print "analysis info, max, length, mean", np.max(analysisarray), len(analysisarray), np.mean(analysisarray)
-	n, bins, patches = plt.hist(analysisarray, bins=binarr)
+	n, bins, patches = plt.hist(analysisarray)
 	print "hist data", n, bins, patches
 			 
 	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
@@ -274,11 +274,11 @@ def TotIntCompPlot(pkl1,pkl2):
 	#binarr = [-0.35, -0.25, -0.15, -0.05, 0.05, 0.015]
 	#binarr = [-0.325, -0.275, -0.225, -0.175, -0.125, -0.075, -0.025, 0.025, 0.075, 0.125]
 	#binarr = [-32.5, -27.5, -22.5, -17.5, -12.5, -7.5, -2.5, 2.5, 7.5, 12.5]
-	binarr = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25]
+	#binarr = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25]
 	comp = np.abs(comp)
 	analysisarray = np.abs(analysisarray)
 	print "analysis info, max, length, mean", np.max(analysisarray), len(analysisarray), np.mean(analysisarray)
-	n, bins, patches = plt.hist(analysisarray, bins=binarr)
+	n, bins, patches = plt.hist(analysisarray)
 	print "hist data", n, bins, patches
 			 
 	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
