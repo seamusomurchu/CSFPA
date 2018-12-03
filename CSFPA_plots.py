@@ -291,7 +291,7 @@ def TotIntCompPlot(pkl1,pkl2):
 def PhaXCompPlot(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	PhaX1 = PhaXarr/max(PhaXarr)
+	PhaX1 = PhaYarr/max(PhaYarr) # cross and co polar mixed up
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -348,10 +348,71 @@ def PhaXCompPlot(pkl1,pkl2):
 	
 	return
 
+def MagXCompPlot(pkl1,pkl2):
+	#initially going to hardcode for intensity or magnitude
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
+	MagX1 = MagYarr/max(MagYarr) #since cross and co polar are mixed up
+
+	plt.figure(facecolor='xkcd:pale green')
+	plt.subplot(221, facecolor='#d8dcd6')
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=MagX1, cmap='jet',marker='s',s=5)
+	plt.axis([-60, 60, -60, 60])
+	plt.axis('equal')
+	plt.title("FP - {}".format(pkl1),fontsize=10)
+	
+	plt.subplot(222, facecolor='#d8dcd6')
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
+	MagX2 = MagXarr/max(MagXarr)
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=MagX2, cmap='jet',marker='s',s=5)
+	plt.axis([-60, 60, -60, 60])
+	plt.axis('equal')
+	plt.title("FP - {}".format(pkl2),fontsize=10)
+	
+	plt.subplot(223, facecolor='#d8dcd6')
+	comp = (MagX1 - MagX2) * 100
+	analysisarray = ([])
+	#okay so here i am finding all of the outer pixels and setting to zero
+	#this allows me to analyse valid pixels between grasp and modal
+	#maybe i should delete these elements of the array to make data analysis easier
+	for i in range(len(PixCenX)):
+		if np.sqrt(PixCenX[i]**2 + PixCenY[i]**2) > 0.05:	
+			comp[i] = 0
+			PixCenX[i] = 0.05
+			PixCenY[i] = 0.05
+		else:
+			analysisarray = np.append(comp[i], analysisarray)
+			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
+			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
+
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s')
+	plt.axis([-60, 60, -60, 60])
+	plt.axis('equal')
+	plt.title("Data Comparison",fontsize=10)	
+	
+	plt.subplot(224, facecolor='#d8dcd6')
+    #do histogram here	
+	#binarr = [-0.35, -0.25, -0.15, -0.05, 0.05, 0.015]
+	#binarr = [-0.325, -0.275, -0.225, -0.175, -0.125, -0.075, -0.025, 0.025, 0.075, 0.125]
+	#binarr = [-32.5, -27.5, -22.5, -17.5, -12.5, -7.5, -2.5, 2.5, 7.5, 12.5]
+	#binarr = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25]
+
+	analysisarray = np.abs(analysisarray)
+	#analysisarray = analysisarray[~np.isnan(analysisarray)]
+	print "analysis info, max, length, mean", np.max(analysisarray), len(analysisarray), np.mean(analysisarray)
+	n, bins, patches = plt.hist(analysisarray)
+	print "hist data", n, bins, patches
+			 
+	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
+	cax = plt.axes([0.85, 0.1, 0.05, 0.8])
+	plt.colorbar(cax=cax,label="% Difference Comparison")    
+	plt.show()	
+	
+	return
+
 def FPComparisonPlotRAW(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	IntX1 = Ix/max(Ix)
+	IntX1 = Iy/max(Iy) # cx and co mixed
 
 	plt.figure()
 	plt.subplot(221)
