@@ -102,42 +102,42 @@ def getXYcoords(f, vtxs):
             cntj = cntj + 1 
         
         #Do for Magnitude X
-        MagXsum = sum(MagXlist)
+        MagXsum = sum(MagXlist)/len(MagXlist)
         MagXarr = np.append(MagXarr,MagXsum)    #Now set int and arr to zero for next loop
         MagXsum = 0
         MagXlist = np.array([])
         #Do for Phase X
-        PhaXsum = sum(PhaXlist)
+        PhaXsum = sum(PhaXlist)/len(PhaXlist)
         PhaXarr = np.append(PhaXarr,PhaXsum)
         PhaXsum = 0
         PhaXlist = np.array([])
         #Do for Mag Y
-        MagYsum = sum(MagYlist)
+        MagYsum = sum(MagYlist)/len(MagYlist)
         MagYarr = np.append(MagYarr,MagYsum)    #Now set int and arr to zero for next loop
         MagYsum = 0
         MagYlist = np.array([])       
         #Do for Phase Y
-        PhaYsum = sum(PhaYlist)
+        PhaYsum = sum(PhaYlist)/len(PhaYlist)
         PhaYarr = np.append(PhaYarr,PhaYsum)
         PhaYsum = 0
         PhaYlist = np.array([])
         #Re, Im data
-        ReXsum = sum(ReXlist)
+        ReXsum = sum(ReXlist)/len(ReXlist)
         ReXarr = np.append(ReXarr,ReXsum)
         ReXsum = 0
         ReXlist = np.array([])
         #ImX arr work
-        ImXsum = sum(ImXlist)
+        ImXsum = sum(ImXlist)/len(ImXlist)
         ImXarr = np.append(ImXarr,ImXsum)
         ImXsum = 0
         ImXlist = np.array([])
         #Re Y data
-        ReYsum = sum(ReYlist)
+        ReYsum = sum(ReYlist)/len(ReYlist)
         ReYarr = np.append(ReYarr,ReYsum)
         ReYsum = 0
         ReYlist = np.array([])
         #ImY arr work
-        ImYsum = sum(ImYlist)
+        ImYsum = sum(ImYlist)/len(ImYlist)
         ImYarr = np.append(ImYarr,ImYsum)
         ImYsum = 0
         ImYlist = np.array([])

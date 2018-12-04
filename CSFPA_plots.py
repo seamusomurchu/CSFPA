@@ -384,7 +384,7 @@ def MagXCompPlot(pkl1,pkl2):
 			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
 			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
 
-	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s')
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
