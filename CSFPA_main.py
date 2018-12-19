@@ -37,11 +37,12 @@ def MainProg(filename):
     #vtxcounter = np.zeros(248)
     vtxcounter = np.zeros(992)    
     #DEBUG
-    print "vtxs = ", vtxs.shape
-    print "vtxcounter = ", vtxcounter.shape
+    #print "vtxs = ", vtxs.shape
+    #print "vtxcounter = ", vtxcounter.shape
 
         
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY = getXYcoords(filename,vtxs) 
+    print "getxycoordfunctest", max(MagXarr), MagXarr.shape
 
     vtxcounter = np.vstack((vtxcounter,vtxcntarr))
     vtxcounter = vtxcounter.T
@@ -53,7 +54,7 @@ def MainProg(filename):
 	
 	#outsourcing intensity calc to dataIO
     IntX, IntY, IntT = IntensityCalc(MagXarr, PhaXarr, MagYarr, PhaYarr)  
-    print "intensity tests", IntX.shape   
+    print "intensity tests shape max", IntX.shape, max(IntX)
     #use this order for a header
     #dat = np.hstack((MagXmat,vtxcounter,ReXmat,ImXmat,ReYmat,ImYmat))
     dat = np.vstack((MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT))

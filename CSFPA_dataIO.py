@@ -315,5 +315,6 @@ def IntensityCalcRAW(filename):
     Ix = (data[:,4]*np.cos(data[:,5]))**2 + (data[:,4]*np.sin(data[:,5]))**2
     Iy = (data[:,6]*np.cos(data[:,7]))**2 + (data[:,6]*np.sin(data[:,7]))**2
     IT = Ix[:] + Iy[:]
+    print "Intensity calculation shape test", IT.shape, max(IT)
 	
     return Ix, Iy, IT
