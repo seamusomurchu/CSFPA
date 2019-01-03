@@ -318,3 +318,27 @@ def IntensityCalcRAW(filename):
     print "Intensity calculation shape test", IT.shape, max(IT)
 	
     return Ix, Iy, IT
+
+def kwavenum(freq):
+	print "function takes frequency in GHz and returns wavenumber in per mm and lambda in mm"
+	
+	freq = float(freq) * 10**9
+	
+	lamb = (299792458 / freq) * 1000 #convert to mm and per mm with *1000
+	
+	wavenum = 2*np.pi / lamb
+	
+	return wavenum, freq, lamb
+
+def GridPowerCalc(pkl):
+	#calculate total power on a GRASP focal plane
+	
+	freqGHz = 150 # assume this is standard for grasp models
+	
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
+
+	k, f, l = kwavenum(freqGHz)
+
+	P = IT[:] * k**2
+
+	return P
