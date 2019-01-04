@@ -338,7 +338,9 @@ def GridPowerCalc(pkl):
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
 
 	k, f, l = kwavenum(freqGHz)
+	
+	print "wavenum l in W/mm^2, freq in Hz, lambda in mm; ", k,f,l
 
-	P = IT[:] * k**2
+	P = IT * k**2
 
 	return P

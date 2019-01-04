@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from CSFPA_dataIO import RetrieveVars
+from CSFPA_dataIO import RetrieveVars, kwavenum
 import pickle #ignore warning, seems like RetrieveVars uses it
 
 
@@ -10,14 +10,18 @@ def TotalIntensityPlot(plotfname):
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     ######################Total Intensity plot - Normalised
     
+    k, f, l = kwavenum(150)
+    IntT = (IntT / 4*np.pi) * k**2 * 7.29 #need to rethink all of these calculations
+    IT = (IT / 4*np.pi) * k**2 * 7.29 
+	
     plt.figure(facecolor='xkcd:pale green')
     plt.subplot(121, facecolor='#d8dcd6')
-    plt.scatter(PixCenX*1000,PixCenY*1000, c=IntT/max(IntT), cmap='jet',marker='s')
+    plt.scatter(PixCenX*1000,PixCenY*1000, c=IntT, cmap='jet',marker='s')
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
     plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
     plt.subplot(122, facecolor='#d8dcd6')
-    plt.scatter(xycoords[:,0],xycoords[:,1], c=IT[:]/max(IT[:]), cmap='jet',marker='.')
+    plt.scatter(xycoords[:,0],xycoords[:,1], c=IT, cmap='jet',marker='.')
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
     plt.title("RAW - {}".format(filename),fontsize=10)
@@ -291,7 +295,7 @@ def IntYCompPlot(pkl1,pkl2):
 def TotIntCompPlot(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	IntT1 = IntT/max(IntT)
+	IntT1 = IntT#/max(IntT)
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -302,7 +306,7 @@ def TotIntCompPlot(pkl1,pkl2):
 	
 	plt.subplot(222, facecolor='#d8dcd6')
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	IntT2 = IntT/max(IntT)
+	IntT2 = IntT#/max(IntT)
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=IntT2, cmap='jet',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
