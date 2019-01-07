@@ -330,17 +330,59 @@ def kwavenum(freq):
 	
 	return wavenum, freq, lamb
 
+def FindGridArea(pkl):
+	#load pickle
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
+	#with filename from pickle load data
+	data = np.loadtxt(filename, skiprows=1)
+	gridmax = max(data[:,3]) * 1000 #convert min and max from m to mm
+	gridmin = min(data[:,3]) * 1000
+	gridarea = (gridmax - gridmin) **2
+	
+	return gridarea
+
 def GridPowerCalc(pkl):
 	#calculate total power on a GRASP focal plane
-	
+	fourpi = 4*np.pi
 	freqGHz = 150 # assume this is standard for grasp models
-	
+	#load variables for a given FPA pickle file
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
-
+	#retrieve wavenumber info to calculate power with ksquared
 	k, f, l = kwavenum(freqGHz)
 	
 	print "wavenum l in W/mm^2, freq in Hz, lambda in mm; ", k,f,l
 
-	P = IT * k**2
+	#calculate power flux for area of a data point
+	#use area box of each data point
+	gridarea = FindGridArea(pkl) #find area of grasp grid (in mm)
+	pixarea = gridarea / len(xycoords) #find area of 'pixel' on grasp grid
+	print "pix area", pixarea
+	print "grid area", gridarea
+	#calculate power of each data point on grid
+	P = IT * k**2 
+	Pmean = np.mean(P) * gridarea
+	PF = P * pixarea #calculate power flux area of each datapoint
+	PFsum = sum(PF)
+	#calculate power on grid with two methods
+	pd = ((PFsum - fourpi) / fourpi) * 100 #%diff to 4pi
+	#print results in line
+	print "from mean power flux, sumed points, %diff", Pmean, PFsum, pd
+	#return array with power flux for each data point in grid
+	return PFsum
 
-	return P
+def TESPowerCalc(pkl):
+	#calculate total power on a GRASP TES focal plane
+	TESarea = 7.29 #mm^2
+	fourpi = 4*np.pi
+	freqGHz = 150 # assume this is standard for grasp models
+	#load variables for a given FPA pickle file
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
+	#retrieve wavenumber info to calculate power with ksquared
+	k, f, l = kwavenum(freqGHz)
+
+	print "wavenum l in W/mm^2, freq in Hz, lambda in mm; ", k,f,l
+
+	#calculate power of each TES on focal plane
+	TESPower = IntT * k**2 * TESarea / fourpi
+	
+	return TESPower
