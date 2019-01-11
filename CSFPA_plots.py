@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from CSFPA_dataIO import RetrieveVars, kwavenum, TESPowerCalc
+from CSFPA_dataIO import RetrieveVars, kwavenum, TESPowerCalc, GridPowerCalc
 import pickle #ignore warning, seems like RetrieveVars uses it
 
 
@@ -11,6 +11,7 @@ def TotalIntensityPlot(plotfname):
     ######################Total Intensity plot - Normalised
     
     TESPower = TESPowerCalc(plotfname)
+    GPow = GridPowerCalc(plotfname)
 	
     plt.figure(facecolor='xkcd:pale green')
     plt.subplot(121, facecolor='#d8dcd6')
@@ -19,7 +20,7 @@ def TotalIntensityPlot(plotfname):
     plt.axis('equal')
     plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
     plt.subplot(122, facecolor='#d8dcd6')
-    plt.scatter(xycoords[:,0],xycoords[:,1], c=IT, cmap='jet',marker='.')
+    plt.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet',marker='.')
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
     plt.title("RAW - {}".format(filename),fontsize=10)

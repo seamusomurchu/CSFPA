@@ -302,8 +302,8 @@ def IntensityCalc(MagXarr, PhaXarr, MagYarr, PhaYarr):
 	#return intensity X or Y
 	#calculate total intensity back in main
 	
-	IntX = MagXarr*np.cos(PhaXarr)**2 + MagXarr*np.sin(PhaXarr)**2
-	IntY = MagYarr*np.cos(PhaYarr)**2 + MagYarr*np.sin(PhaYarr)**2
+	IntX = (MagXarr*np.cos(PhaXarr))**2 + (MagXarr*np.sin(PhaXarr))**2
+	IntY = (MagYarr*np.cos(PhaYarr))**2 + (MagYarr*np.sin(PhaYarr))**2
 	IntT = IntX[:] + IntY[:]
 	
 	return IntX, IntY, IntT
@@ -359,16 +359,17 @@ def GridPowerCalc(pkl):
 	print "pix area", pixarea
 	print "grid area", gridarea
 	#calculate power of each data point on grid
+	#IT[IT < 0.000059] = 0 #corresponds to GRASPS -85dB level
 	P = IT * k**2 
 	Pmean = np.mean(P) * gridarea
 	PF = P * pixarea #calculate power flux area of each datapoint
-	PFsum = sum(PF)
+	PFsum = np.sum(PF)
 	#calculate power on grid with two methods
 	pd = ((PFsum - fourpi) / fourpi) * 100 #%diff to 4pi
 	#print results in line
 	print "from mean power flux, sumed points, %diff", Pmean, PFsum, pd
 	#return array with power flux for each data point in grid
-	return PFsum
+	return PF/fourpi
 
 def TESPowerCalc(pkl):
 	#calculate total power on a GRASP TES focal plane
