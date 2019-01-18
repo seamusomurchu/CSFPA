@@ -387,3 +387,14 @@ def TESPowerCalc(pkl):
 	TESPower = IntT * k**2 * TESarea / fourpi
 	
 	return TESPower
+
+def OutputTESPower(TESPower):
+	
+	outF = open("/home/james/files4CSFPA/qbdataioOUTFILES/TESPowerOutfile.txt", "w")
+	for line in TESPower:
+	  # write line to output file
+		outF.write(str(line))
+		outF.write("\n")
+	outF.close()
+	
+	return

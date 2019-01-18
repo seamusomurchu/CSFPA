@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from CSFPA_dataIO import RetrieveVars, kwavenum, TESPowerCalc, GridPowerCalc
+from CSFPA_dataIO import RetrieveVars, kwavenum, TESPowerCalc, GridPowerCalc, OutputTESPower
 import pickle #ignore warning, seems like RetrieveVars uses it
 
 
@@ -571,3 +571,38 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	plt.show()	
 	
 	return
+
+def TotIntensityHist(plotfname):
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
+    ######################Total Intensity plot - Normalised
+    
+    TESPower = TESPowerCalc(plotfname)
+    GPow = GridPowerCalc(plotfname)
+	
+    plt.figure(facecolor='xkcd:pale green')
+    plt.subplot(221, facecolor='#d8dcd6')
+    plt.scatter(PixCenX*1000,PixCenY*1000, c=TESPower, cmap='jet',marker='s')
+    plt.axis([-60, 60, -60, 60])
+    plt.axis('equal')
+    plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
+	
+    plt.subplot(222, facecolor='#d8dcd6')
+    plt.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet',marker='.')
+    plt.axis([-60, 60, -60, 60])
+    plt.axis('equal')
+    plt.title("RAW - {}".format(filename),fontsize=10)
+	
+    plt.subplot(212, facecolor='#d8dcd6')
+    plt.plot(TESPower, marker='_', linestyle="", markersize=0.75)
+	
+	#output TES Power to file
+    OutputTESPower(TESPower)
+	
+    plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
+    cax = plt.axes([0.85, 0.1, 0.05, 0.8])
+    plt.colorbar(cax=cax,label="Intensity")
+    plt.show()
+    os.system('spd-say "BING! BING! BING!"')	
+
+	
+    return
