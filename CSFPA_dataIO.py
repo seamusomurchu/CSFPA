@@ -389,12 +389,24 @@ def TESPowerCalc(pkl):
 	return TESPower
 
 def OutputTESPower(TESPower):
-	
+	#outfile location
 	outF = open("/home/james/files4CSFPA/qbdataioOUTFILES/TESPowerOutfile.txt", "w")
-	for line in TESPower:
+	#set up det nums from array
+	pix = np.linspace(1,len(TESPower),len(TESPower), dtype=int)
+	
+	data = np.array([pix, TESPower]).T
+	outF.write('Pixel Number as defined by qubicsoft vertexes | Power in Watts' + '\n')	        	  
+
+	np.savetxt(outF, data, fmt='%i %1.4e', delimiter ='    ')
+	#iterate through TES Power values
+	#i = 0
+	#for line in TESPower:
 	  # write line to output file
-		outF.write(str(line))
-		outF.write("\n")
-	outF.close()
+	  #output header
+		#outF.write('Pixel Number as defined by qubicsoft vertexes | Power in Watts')	        	  
+		##outF.write(pix[i], '{:.4e}'.format(line))
+		#outF.write("\n")
+		#i+=1
+	#outF.close()
 	
 	return

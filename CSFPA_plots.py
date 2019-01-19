@@ -572,7 +572,7 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	
 	return
 
-def TotIntensityHist(plotfname):
+def TESPowAnalysis(plotfname):
     MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
     ######################Total Intensity plot - Normalised
     
@@ -581,7 +581,7 @@ def TotIntensityHist(plotfname):
 	
     plt.figure(facecolor='xkcd:pale green')
     plt.subplot(221, facecolor='#d8dcd6')
-    plt.scatter(PixCenX*1000,PixCenY*1000, c=TESPower, cmap='jet',marker='s')
+    plt.scatter(PixCenX*1000,PixCenY*1000, c=TESPower, cmap='jet',marker='s',s=4)
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
     plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
