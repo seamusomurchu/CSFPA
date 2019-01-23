@@ -3,6 +3,8 @@ import numpy as np
 import os
 from CSFPA_dataIO import RetrieveVars, kwavenum, TESPowerCalc, GridPowerCalc, OutputTESPower
 import pickle #ignore warning, seems like RetrieveVars uses it
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
 
 
 #def TotalIntensityPlot(PixCenX,PixCenY,IntT,xycoords,IT):
@@ -605,4 +607,37 @@ def TESPowAnalysis(plotfname):
     os.system('spd-say "BING! BING! BING!"')	
 
 	
+    return
+
+def TESPowPlot(plotfname):
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
+    #load TES power array
+    TESPower = TESPowerCalc(plotfname)
+    GPow = GridPowerCalc(plotfname)
+    #plot tes power
+
+    fig = plt.figure(facecolor='xkcd:pale green')
+    fig.suptitle("File Analysis: '{}'".format(plotfname),fontsize=12)
+
+    ax1 = fig.add_subplot(221, facecolor='#d8dcd6', aspect='equal')
+    ax1.set_title("Bolometers Total Instensity",fontsize=10)				   
+    sc = ax1.scatter(PixCenX,PixCenY, c=TESPower, cmap='jet',marker='s',s=4)
+    cbar = fig.colorbar(sc, label="Intensity (W)")
+
+    ax2 = fig.add_subplot(222, facecolor='#d8dcd6', aspect='equal')
+    sc = ax2.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet',marker='.')
+    ax2.set_title("RAW Grasp Total Instensity", fontsize=10)
+    cbar = fig.colorbar(sc, label="Intensity (W)")
+
+    ax3 = fig.add_subplot(212, facecolor='#d8dcd6')
+    tp = ax3.plot(TESPower, marker='_', linestyle="", markersize=0.75)
+    ax3.set_title("TES Detector Power Plot")
+    ax3.set_ylabel("Intensity (W)")
+    ax3.set_xlabel("TES Pixel Number (qubicsoft order)")
+
+    plt.show()
+
+    #output TES Power to file
+    OutputTESPower(TESPower)
+
     return
