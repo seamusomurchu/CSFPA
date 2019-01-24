@@ -610,8 +610,14 @@ def TESPowAnalysis(plotfname):
     return
 
 def TESPowPlot(plotfname):
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
-    #load TES power array
+    rep = '/home/james/files4CSFPA/qbdataioOUTFILES/'
+    repfile = rep + plotfname
+    #load pickle data
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(repfile)
+    #load qbdata for TES and Save function 
+    qbrep = '/home/james/files4CSFPA/Fromqbdataio/'
+    qbrepfile = qbrep + filename
+    #load TES power array    
     TESPower = TESPowerCalc(plotfname)
     GPow = GridPowerCalc(plotfname)
     #plot tes power
@@ -622,22 +628,42 @@ def TESPowPlot(plotfname):
     ax1 = fig.add_subplot(221, facecolor='#d8dcd6', aspect='equal')
     ax1.set_title("Bolometers Total Instensity",fontsize=10)				   
     sc = ax1.scatter(PixCenX,PixCenY, c=TESPower, cmap='jet',marker='s',s=4)
-    cbar = fig.colorbar(sc, label="Intensity (W)")
+    cbar = fig.colorbar(sc, label="Intensity per Bolometer (W)")
 
     ax2 = fig.add_subplot(222, facecolor='#d8dcd6', aspect='equal')
     sc = ax2.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet',marker='.')
     ax2.set_title("RAW Grasp Total Instensity", fontsize=10)
-    cbar = fig.colorbar(sc, label="Intensity (W)")
+    cbar = fig.colorbar(sc, label="Intensity per GRASP data point (W)")
 
     ax3 = fig.add_subplot(212, facecolor='#d8dcd6')
     tp = ax3.plot(TESPower, marker='_', linestyle="", markersize=0.75)
     ax3.set_title("TES Detector Power Plot")
-    ax3.set_ylabel("Intensity (W)")
-    ax3.set_xlabel("TES Pixel Number (qubicsoft order)")
+    ax3.set_ylabel("Intensity per Bolometer (W)")
+    ax3.set_xlabel("TES Bolometer Number (qubicsoft order)")
+    ax3.set_xlim(1,992)
 
     plt.show()
 
-    #output TES Power to file
-    OutputTESPower(TESPower)
+    #output TES Power to file + use filename for file naming system
+    OutputTESPower(TESPower, filename)
 
     return
+
+def PowDiffCalc(file1,file2):
+	#compare power difference between models
+	rep = '/home/james/files4CSFPA/qbdataioOUTFILES/'
+	repfile1 = rep + file1
+	repfile2 = rep + file2
+	
+	data1 = np.loadtxt(repfile1, skiprows=1)
+	data2 = np.loadtxt(repfile2, skiprows=1)
+	
+	diff = ( (data1[:,1] - data2[:,1]) / data1[:,1] ) * 100
+	
+	plt.plot(diff, marker='_', linestyle="")
+	plt.xlabel("Bolometer Number")
+	plt.ylabel("% Difference")
+	plt.title("% difference between old/new CAL_SOU coordinates")
+	plt.show()
+	
+	return

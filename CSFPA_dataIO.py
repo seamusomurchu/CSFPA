@@ -217,7 +217,8 @@ def SaveVars(MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr,
     #    with open('objs.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     #        pickle.dump([MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT], f)
     #    return
-    f=open('FPA_objs_'+filename+'.pkl', 'wb')
+    orep = '/home/james/files4CSFPA/qbdataioOUTFILES/'
+    f=open(orep + 'FPA_objs_' + filename + '.pkl', 'wb')
     pickle.dump(MagXarr,f)
     pickle.dump(PhaXarr,f)
     pickle.dump(ReXarr,f)
@@ -332,9 +333,12 @@ def kwavenum(freq):
 
 def FindGridArea(pkl):
 	#load pickle
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
+	pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + pkl
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
 	#with filename from pickle load data
-	data = np.loadtxt(filename, skiprows=1)
+	qbrep = '/home/james/files4CSFPA/Fromqbdataio/'
+	qbrepfile = qbrep + filename
+	data = np.loadtxt(qbrepfile, skiprows=1)
 	gridmax = max(data[:,3]) * 1000 #convert min and max from m to mm
 	gridmin = min(data[:,3]) * 1000
 	gridarea = (gridmax - gridmin) **2
@@ -342,11 +346,12 @@ def FindGridArea(pkl):
 	return gridarea
 
 def GridPowerCalc(pkl):
+	pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + pkl
 	#calculate total power on a GRASP focal plane
 	fourpi = 4*np.pi
 	freqGHz = 150 # assume this is standard for grasp models
 	#load variables for a given FPA pickle file
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
 	#retrieve wavenumber info to calculate power with ksquared
 	k, f, l = kwavenum(freqGHz)
 	
@@ -372,12 +377,14 @@ def GridPowerCalc(pkl):
 	return PF/fourpi
 
 def TESPowerCalc(pkl):
+	#give pkl location
+	pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + pkl
 	#calculate total power on a GRASP TES focal plane
 	TESarea = 7.29 #mm^2
 	fourpi = 4*np.pi
 	freqGHz = 150 # assume this is standard for grasp models
 	#load variables for a given FPA pickle file
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl)
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
 	#retrieve wavenumber info to calculate power with ksquared
 	k, f, l = kwavenum(freqGHz)
 
@@ -388,9 +395,9 @@ def TESPowerCalc(pkl):
 	
 	return TESPower
 
-def OutputTESPower(TESPower):
+def OutputTESPower(TESPower,filename):
 	#outfile location
-	outF = open("/home/james/files4CSFPA/qbdataioOUTFILES/TESPowerOutfile.txt", "w")
+	outF = open("/home/james/files4CSFPA/qbdataioOUTFILES/TESPowOfile"+filename+".txt", "w")
 	#set up det nums from array
 	pix = np.linspace(1,len(TESPower),len(TESPower), dtype=int)
 	

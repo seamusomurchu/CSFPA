@@ -8,7 +8,9 @@ from CSFPA_dataIO import getXYcoords, dataIO, dataAnalysis, SaveVars, IntensityC
 def MainProg(filename): 
     start = timeit.default_timer()
     
-    print filename, "passing filename test"
+    rep = '/home/james/files4CSFPA/Fromqbdataio/'
+    repfile = rep + filename
+    print "file and rep: ", repfile
     #scene = QubicScene(256)
     #inst = instrument.QubicInstrument(filter_nu=150e9)
 #    inst = instrument.QubicInstrument()
@@ -19,10 +21,10 @@ def MainProg(filename):
 
     q = qubic.QubicMultibandInstrument(d)
     
-    rep = "/home/james/CF-Source-Focal-Place-Analysis/UItest"
-    
-    files = glob.glob(rep+filename)
-    files.sort()
+#    rep = "/home/james/CF-Source-Focal-Place-Analysis/UItest"
+#    
+#    files = glob.glob(rep+filename)
+#    files.sort()
     
     #vtxs = vertexes of TD detectors
 #    vtxs = inst.detector.vertex[496:744]
@@ -41,7 +43,7 @@ def MainProg(filename):
     #print "vtxcounter = ", vtxcounter.shape
 
         
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY = getXYcoords(filename,vtxs) 
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY = getXYcoords(repfile,vtxs) 
     print "getxycoordfunctest", max(MagXarr), MagXarr.shape
 
     vtxcounter = np.vstack((vtxcounter,vtxcntarr))
@@ -69,7 +71,7 @@ def MainProg(filename):
     dataIO(datmod,datmodstring)
     
     #load data for plotting raw modal data
-    dataCF1 = np.loadtxt(filename, skiprows=1) 
+    dataCF1 = np.loadtxt(repfile, skiprows=1) 
     xycoords = np.array(dataCF1[:,2:4])
     
     #plotting RAW INTENSITY
@@ -77,7 +79,7 @@ def MainProg(filename):
     #Iy = (dataCF1[:,6]*np.cos(dataCF1[:,7]))**2 + (dataCF1[:,6]*np.sin(dataCF1[:,7]))**2
     #IT = Ix + Iy
 	
-    Ix, Iy, IT = IntensityCalcRAW(filename)
+    Ix, Iy, IT = IntensityCalcRAW(repfile)
 	
     #testing setting zeros to NANs
     ITnans = [np.nan if x == 0 else x for x in IT]
