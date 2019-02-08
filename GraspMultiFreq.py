@@ -50,6 +50,7 @@ def FreqSplitter(filename, pdims):
 	#this program takes a multi frequency grasp file and...,
 	#splits it into single frequency files
 	#set temp outfile
+	outrep = "/home/james/files4CSFPA/freqfiles/"
 	outfile = "/home/james/files4CSFPA/tempfiles/tempMultiF.txt"
 	freqs = np.loadtxt('FrequencyListGHz.txt', delimiter=',')
 	with open(filename) as f:
@@ -66,10 +67,10 @@ def FreqSplitter(filename, pdims):
 	i = 0	
 	for i, freq in enumerate(freqs):
 		print freq, i
-		f = open('FreqFile'+str(freq)+'.qb', "w")
+		f = open(outrep+'FreqFile'+str(freq)+'.qb', "w")
 		#print df[int(l1[i]):int(l2[i])]
 		dft = df[int(l1[i]):int(l2[i])]
-		dft.to_csv(f)
+		dft.to_csv(f, sep=',', index=False, header=False, float_format='%.9e')
 	
 	
 	#loop through frequency array	
