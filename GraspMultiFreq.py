@@ -9,6 +9,7 @@ multi frequency analysis code similar to qbdataio but now included in CSFPA
 
 import numpy as np
 import pandas as pd
+import glob
 
 def MultiGraspInfo(fname):
 	#load frequencies
@@ -67,39 +68,11 @@ def FreqSplitter(filename, pdims):
 	i = 0	
 	for i, freq in enumerate(freqs):
 		print freq, i
-		f = open(outrep+'FreqFile'+str(freq)+'.qb', "w")
+		f = open(outrep+'FreqFile'+str(freq)+'.qbsf', "w")	#qbsf, sf => single frequency file
 		#print df[int(l1[i]):int(l2[i])]
 		dft = df[int(l1[i]):int(l2[i])]
 		dft.to_csv(f, sep=',', index=False, header=False, float_format='%.9e')
-	
-	
-	#loop through frequency array	
-	"""
-	i = 0	
-	for i, freq in enumerate(freqs):
-		print freq, i
-		with open('FreqFile'+str(freq)+'.qb', "w") as ff:
-			with open(outfile, "r+") as f1:
-				for line in f1:
-					ff.write(line)
-					#print f1
-					#ff.write(f1)
-					#ff.write(str(f1))
-					i += 1
-					#if blah return to right indent
-				#can maybe combine these two methods by adding another for
-
-			i = 0
-			for line, i in f1:
-				ff.write(line)
-				#f1.'delete
-				
-				#or/and delete this line from the temp file
-				if i == pdims[0]**2:
-					#add code here to delete first 58081 lines from temp file
-					return #or break
-				i += 1
-			"""		
+		
 	return
 
 def MultiFreqMain(filename):
@@ -107,8 +80,8 @@ def MultiFreqMain(filename):
 	dims, pdims, datastart = MultiGraspInfo(filename)
 	#make temp file in split frequency files
 	FreqSplitter(filename, pdims)
-	#extract data to pre-analysis temp file
-	#for each freqrange of temp file save each individual frequency to file
+	#use single frequency files and sum them into a new file
+	FreqSummer()
 	"""
 	this will take the shape of looping over tempfile for the number of lines
 	for each frequency (use pdims var to initialise an array for this)
@@ -117,3 +90,25 @@ def MultiFreqMain(filename):
 	
 	return
 
+def FreqSummer():
+	"""
+	I should actually sum intensities here nor Re&Im - return to later
+	
+	this function should take/find the individual frequency files and
+	sum each value in each row
+	keep in mind each file has a total power of 4pi
+	"""
+	#outrep really should be global init
+	outrep = "/home/james/files4CSFPA/freqfiles/"
+	#create list of single frequency files
+	filelist = glob.glob(outrep + '*.qb')
+	#create empty array to loop over using file shape
+	lfile = np.loadtxt(filelist[0], delimiter=',', skiprows=0)
+	temparr = np.array([lfile.shape])
+	#loop over files with index
+	for i, fname in enumerate(filelist[1:]):
+		lfile = np.loadtxt(fname, delimiter=',', skiprows=0)
+		print "load file shape, ", lfile.shape
+		temparr = np.hstack((temparr, lfile))
+	
+	return
