@@ -75,6 +75,16 @@ def FreqSplitter(filename, pdims):
 		
 	return
 
+def FileConverter():
+	"""
+	this function will search for single frequency files and convert them to
+	modal style file format by calling qbdataio &
+	output them in a folder 
+	which will then be used by CSFPA_main
+	"""
+	
+	return
+
 def MultiFreqMain(filename):
 	#get raw info from grasp file
 	dims, pdims, datastart = MultiGraspInfo(filename)
