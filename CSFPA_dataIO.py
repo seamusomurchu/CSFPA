@@ -9,6 +9,7 @@ def getXYcoords(f, vtxs):
     #if f.endswith((".qb")): #okay not necessary for pandas version of wbdataio
     #  data = np.loadtxt(f, skiprows=9)
     #else:
+    print f
     data = np.loadtxt(f, skiprows=1)
 		
     #print "data info = ", data[0], data.shape
