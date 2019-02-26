@@ -67,8 +67,8 @@ def getXYcoords(f, vtxs):
 				x = j[0]
 				y = j[1]
             else:				
-                x = j[0]/1000
-                y = j[1]/1000
+                x = j[0]
+                y = j[1]
             x1 = i[0,0]
             y1 = i[0,1]
             x2 = i[2,0]

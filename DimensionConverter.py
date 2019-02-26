@@ -9,15 +9,17 @@ converts .qb file from mm to m
 """
 import numpy as np
 
+inputrep = '/home/james/files4CSFPA/Fromqbdataio/'
+
 def DimensionConvert(filename):
 	
-	data = np.loadtxt(filename, skiprows=1)
+	data = np.loadtxt(inputrep+filename, skiprows=1)
 	
 	data[:, 2:4] = data[:, 2:4]/1000
 	
 	print data[0]
 	
-	with open('mconv_'+filename, 'wb') as f:
+	with open(inputrep+'mconv_'+filename, 'wb') as f:
 		f.write('Xind	Yind 	Ypos	 Xpos	Xamp	 Xpha	Yamp 	Ypha 	Zamp	    Zpha' + '\n')
 		np.savetxt(f, data, delimiter='    ',fmt='%17.9e')
 	

@@ -543,7 +543,7 @@ def MagXCompPlot(pkl1,pkl2):
 def FPComparisonPlotRAW(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	IntX1 = Iy/max(Iy) # cx and co mixed
+	IntX1 = IT/max(IT) # cx and co mixed
 
 	plt.figure()
 	plt.subplot(221)
@@ -554,14 +554,14 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	
 	plt.subplot(222)
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	IntX2 = Ix/max(Ix)
+	IntX2 = IT/max(IT)
 	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX2, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl2",fontsize=10)
 	
 	plt.subplot(223)
-	comp = IntX1 - IntX2
+	comp = 100 * ( IntX1 - IntX2 ) / IntX1
 	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='jet',marker='s')			
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
