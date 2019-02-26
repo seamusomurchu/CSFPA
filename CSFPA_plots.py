@@ -269,7 +269,7 @@ def IntYCompPlot(pkl1,pkl2):
 			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
 			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
 
-	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s')
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='PiYG',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
@@ -296,7 +296,7 @@ def IntYCompPlot(pkl1,pkl2):
 def TotIntCompPlot(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	IntT1 = IntT#/max(IntT)
+	IntT1 = IntT/max(IntT)
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -307,7 +307,7 @@ def TotIntCompPlot(pkl1,pkl2):
 	
 	plt.subplot(222, facecolor='#d8dcd6')
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	IntT2 = IntT#/max(IntT)
+	IntT2 = IntT/max(IntT1) #Normalise to first files peak
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=IntT2, cmap='jet',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
@@ -317,14 +317,14 @@ def TotIntCompPlot(pkl1,pkl2):
     
 	IntT1[IntT1 == 0] = 0.000001
 	IntT2[IntT2 == 0] = 0.000001	 	 
-	comp = 100 - ((IntT1 / IntT2) * 100) #can delete this % conversion
+	comp = ((IntT1 - IntT2) / IntT1) * 100 #can delete this % conversion
 	analysisarray = ([])
 	#okay so here i am finding all of the outer pixels and setting to zero
 	#this allows me to analyse valid pixels between grasp and modal
 	#maybe i should delete these elements of the array to make data analysis easier
 	for i in range(len(PixCenX)):
 		if np.sqrt(PixCenX[i]**2 + PixCenY[i]**2) > 0.05:	
-			comp[i] = 0
+			comp[i] = np.mean(comp)
 			PixCenX[i] = 0.05
 			PixCenY[i] = 0.05
 		else:
@@ -332,7 +332,7 @@ def TotIntCompPlot(pkl1,pkl2):
 			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
 			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
 
-	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s',s=5)
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='PiYG',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
@@ -343,11 +343,11 @@ def TotIntCompPlot(pkl1,pkl2):
 	#binarr = [-0.325, -0.275, -0.225, -0.175, -0.125, -0.075, -0.025, 0.025, 0.075, 0.125]
 	#binarr = [-32.5, -27.5, -22.5, -17.5, -12.5, -7.5, -2.5, 2.5, 7.5, 12.5]
 	#binarr = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25]
-	binarr = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+	#binarr = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 	#comp = np.abs(comp)
 	#analysisarray = np.abs(analysisarray)
 	print "analysis info, max, length, mean", np.max(analysisarray), len(analysisarray), np.mean(analysisarray)
-	n, bins, patches = plt.hist(analysisarray, bins=binarr)
+	n, bins, patches = plt.hist(analysisarray)
 	print "hist data", n, bins, patches
 			 
 	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
@@ -545,31 +545,39 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
 	IntX1 = IT/max(IT) # cx and co mixed
 
-	plt.figure()
-	plt.subplot(221)
+	plt.figure(facecolor='xkcd:pale green')
+	plt.subplot(221, facecolor='#d8dcd6')
 	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX1, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl1",fontsize=10)
 	
-	plt.subplot(222)
+	plt.subplot(222, facecolor='#d8dcd6')
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	IntX2 = IT/max(IT)
+	IntX2 = IT/max(IntX1) # norm to first plot
 	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX2, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl2",fontsize=10)
+	#initialise comparison array and plot
+	IntX1[IntX1 == 0] = np.mean(IntX1)
+	IntX2[IntX2 == 0] = np.mean(IntX2)
+	comp = 100 * (( IntX1 - IntX2 ) / IntX1)
 	
-	plt.subplot(223)
-	comp = 100 * ( IntX1 - IntX2 ) / IntX1
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='jet',marker='s')			
+	plt.subplot(223, facecolor='#d8dcd6')
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='PiYG',marker='s')			
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
-	plt.title("Data Comparison",fontsize=10)	
-	
+	plt.title("Data Comparison",fontsize=10)
+	#Now do histogram
+	plt.subplot(224, facecolor='#d8dcd6')
+	print "analysis info, max, length, mean", np.max(comp), len(comp), np.mean(comp)
+	n, bins, patches = plt.hist(comp)
+	print "hist data", n, bins, patches
+	#Set colorbar	
 	plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
 	cax = plt.axes([0.85, 0.1, 0.05, 0.8])
-	plt.colorbar(cax=cax,label="Comparison")    
+	plt.colorbar(cax=cax,label="Model % Diff Comparison")    
 	plt.show()	
 	
 	return
