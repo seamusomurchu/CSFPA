@@ -583,7 +583,8 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	return
 
 def TESPowAnalysis(plotfname):
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
+    pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + plotfname
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
     ######################Total Intensity plot - Normalised
     
     TESPower = TESPowerCalc(plotfname)
@@ -606,7 +607,7 @@ def TESPowAnalysis(plotfname):
     plt.plot(TESPower, marker='_', linestyle="", markersize=0.75)
 	
 	#output TES Power to file
-    OutputTESPower(TESPower)
+    OutputTESPower(TESPower, filename)
 	
     plt.subplots_adjust(bottom=0.1, right=0.8, top=0.9)
     cax = plt.axes([0.85, 0.1, 0.05, 0.8])
