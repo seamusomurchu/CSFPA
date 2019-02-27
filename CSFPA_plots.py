@@ -9,7 +9,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 #def TotalIntensityPlot(PixCenX,PixCenY,IntT,xycoords,IT):
 def TotalIntensityPlot(plotfname):
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
+    pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + plotfname
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
     ######################Total Intensity plot - Normalised
     
     TESPower = TESPowerCalc(plotfname)
@@ -22,7 +23,7 @@ def TotalIntensityPlot(plotfname):
     plt.axis('equal')
     plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
     plt.subplot(122, facecolor='#d8dcd6')
-    plt.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet',marker='.')
+    plt.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet', marker='.', s=0.5)
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
     plt.title("RAW - {}".format(filename),fontsize=10)
@@ -565,7 +566,7 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	comp = 100 * (( IntX1 - IntX2 ) / IntX1)
 	
 	plt.subplot(223, facecolor='#d8dcd6')
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='PiYG',marker='s')			
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='YlGnBu',marker='s')			
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)
