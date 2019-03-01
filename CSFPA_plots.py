@@ -5,6 +5,7 @@ from CSFPA_dataIO import RetrieveVars, kwavenum, TESPowerCalc, GridPowerCalc, Ou
 import pickle #ignore warning, seems like RetrieveVars uses it
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
+pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/'
 
 
 #def TotalIntensityPlot(PixCenX,PixCenY,IntT,xycoords,IT):
@@ -35,8 +36,9 @@ def TotalIntensityPlot(plotfname):
     return
 
 def IntensityXPlot(plotfname):
+    pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + plotfname
     ######################IntensityX plot
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
     
     plt.figure(facecolor='xkcd:pale green')
     plt.subplot(121, facecolor='#d8dcd6')#xkcd reference for this colour
@@ -58,7 +60,8 @@ def IntensityXPlot(plotfname):
     return
 
 def IntensityYPlot(plotfname):
-    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(plotfname)
+    pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + plotfname
+    MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklrep)
     ######################Intensity Y plot
     plt.figure()
     plt.subplot(121)
@@ -359,10 +362,10 @@ def TotIntCompPlot(pkl1,pkl2):
 	return
 
 def PhaXCompPlot(pkl1,pkl2):
-	#initially going to hardcode for intensity or magnitude
-	#Is this a Pha Y plot?
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	PhaX1 = PhaXarr/max(PhaXarr) # cross and co polar mixed up
+	pklfrep1 = pklrep + pkl1
+	pklfrep2 = pklrep + pkl2
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklfrep1)
+	PhaX1 = PhaXarr#/max(PhaXarr) # cross and co polar mixed up
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -372,22 +375,22 @@ def PhaXCompPlot(pkl1,pkl2):
 	plt.title("FP - {}".format(pkl1),fontsize=10)
 	
 	plt.subplot(222, facecolor='#d8dcd6')
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	PhaX2 = PhaXarr/max(PhaXarr)
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklfrep2)
+	PhaX2 = PhaYarr#/max(PhaXarr)
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=PhaX2, cmap='jet',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("FP - {}".format(pkl2),fontsize=10)
 	
 	plt.subplot(223, facecolor='#d8dcd6')
-	comp = PhaX1 - PhaX2
+	comp = (PhaX1 - PhaX2) / PhaX1 * 100
 	analysisarray = ([])
 	#okay so here i am finding all of the outer pixels and setting to zero
 	#this allows me to analyse valid pixels between grasp and modal
 	#maybe i should delete these elements of the array to make data analysis easier
 	for i in range(len(PixCenX)):
 		if np.sqrt(PixCenX[i]**2 + PixCenY[i]**2) > 0.05:	
-			comp[i] = 0
+			comp[i] = np.mean(comp)
 			PixCenX[i] = 0.05
 			PixCenY[i] = 0.05
 		else:
@@ -395,7 +398,7 @@ def PhaXCompPlot(pkl1,pkl2):
 			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
 			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
 
-	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='jet',marker='s',s=5)
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='PiYG',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
@@ -481,9 +484,11 @@ def PhaYCompPlot(pkl1,pkl2):
 	return
 
 def MagXCompPlot(pkl1,pkl2):
+	pklfrep1 = pklrep + pkl1
+	pklfrep2 = pklrep + pkl2
 	#initially going to hardcode for intensity or magnitude
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
-	MagX1 = MagXarr/max(MagXarr) #since cross and co polar are mixed up
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklfrep1)
+	MagX1 = MagXarr#/max(MagXarr) #since cross and co polar are mixed up
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -493,22 +498,22 @@ def MagXCompPlot(pkl1,pkl2):
 	plt.title("FP - {}".format(pkl1),fontsize=10)
 	
 	plt.subplot(222, facecolor='#d8dcd6')
-	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	MagX2 = MagXarr/max(MagXarr)
+	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pklfrep2)
+	MagX2 = MagYarr#/max(MagYarr)
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=MagX2, cmap='jet',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("FP - {}".format(pkl2),fontsize=10)
 	
 	plt.subplot(223, facecolor='#d8dcd6')
-	comp = (MagX1 - MagX2) * 100
+	comp = (MagX1 - MagX2) / MagX1 * 100
 	analysisarray = ([])
 	#okay so here i am finding all of the outer pixels and setting to zero
 	#this allows me to analyse valid pixels between grasp and modal
 	#maybe i should delete these elements of the array to make data analysis easier
 	for i in range(len(PixCenX)):
 		if np.sqrt(PixCenX[i]**2 + PixCenY[i]**2) > 0.05:	
-			comp[i] = 0
+			comp[i] = np.mean(comp)
 			PixCenX[i] = 0.05
 			PixCenY[i] = 0.05
 		else:

@@ -6,20 +6,26 @@ Created on Mon Dec  3 12:52:01 2018
 @author: james
 
 converts .qb file from mm to m
+give full path to file
+save to files4CSFPA/Fromabdatio
 """
 import numpy as np
+import os
 
-inputrep = '/home/james/files4CSFPA/Fromqbdataio/'
+outputrep = '/home/james/files4CSFPA/Fromqbdataio/'
 
 def DimensionConvert(filename):
 	
-	data = np.loadtxt(inputrep+filename, skiprows=1)
+	data = np.loadtxt(filename, skiprows=1)
 	
 	data[:, 2:4] = data[:, 2:4]/1000
 	
 	print data[0]
 	
-	with open(inputrep+'mconv_'+filename, 'wb') as f:
+	#initialise file for saving
+	fname = os.path.basename(filename)
+	
+	with open(outputrep+'mconv_'+fname, 'wb') as f:
 		f.write('Xind	Yind 	Ypos	 Xpos	Xamp	 Xpha	Yamp 	Ypha 	Zamp	    Zpha' + '\n')
 		np.savetxt(f, data, delimiter='    ',fmt='%17.9e')
 	
