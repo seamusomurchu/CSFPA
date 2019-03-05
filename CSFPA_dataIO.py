@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 import math
+import pandas as pd
 
 
 def getXYcoords(f, vtxs):
@@ -362,7 +363,7 @@ def GridPowerCalc(pkl):
 	#use area box of each data point
 	gridarea = FindGridArea(pkl) #find area of grasp grid (in mm)
 	pixarea = gridarea / len(xycoords) #find area of 'pixel' on grasp grid
-	print "pix area", pixarea
+	print "FP pix area", pixarea
 	print "grid area", gridarea
 	#calculate power of each data point on grid
 	#IT[IT < 0.000059] = 0 #corresponds to GRASPS -85dB level
@@ -381,7 +382,7 @@ def TESPowerCalc(pkl):
 	#give pkl location
 	pklrep = '/home/james/files4CSFPA/qbdataioOUTFILES/' + pkl
 	#calculate total power on a GRASP TES focal plane
-	TESarea = 7.29 #mm^2
+	TESarea = 2.6 * 2.6 #mm^2
 	fourpi = 4*np.pi
 	freqGHz = 150 # assume this is standard for grasp models
 	#load variables for a given FPA pickle file
@@ -418,3 +419,17 @@ def OutputTESPower(TESPower,filename):
 	#outF.close()
 	
 	return
+
+def GetMODALGridPixArea(fname):
+	df = pd.read_csv(fname, sep='\t', header=0)
+	maxX = max(df.X)
+	minX = min(df.X)
+	maxY = max(df.Y)
+	minY = min(df.Y)
+	
+	lenX = (maxX - minX) / 1000 #length of one grid dimension in meters
+	lenY = (maxY - minY) / 1000
+	gridarea = lenX * lenY #grid area in meters^2
+	pixarea = gridarea / len(df.X) #area of each data point
+	
+	return gridarea, pixarea

@@ -311,7 +311,7 @@ def TotIntCompPlot(pkl1,pkl2):
 	
 	plt.subplot(222, facecolor='#d8dcd6')
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	IntT2 = IntT/max(IntT1) #Normalise to first files peak
+	IntT2 = IntT/max(IntT) #Normalise to first files peak
 	plt.scatter(PixCenX*1000,PixCenY*1000, c=IntT2, cmap='jet',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
@@ -550,6 +550,7 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
 	IntX1 = IT/max(IT) # cx and co mixed
+	print max(IT)
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
@@ -560,14 +561,15 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	
 	plt.subplot(222, facecolor='#d8dcd6')
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
-	IntX2 = IT/max(IntX1) # norm to first plot
+	IntX2 = IT/max(IT) # norm to first plot
+	print max(IT)
 	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX2, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl2",fontsize=10)
 	#initialise comparison array and plot
-	IntX1[IntX1 == 0] = np.mean(IntX1)
-	IntX2[IntX2 == 0] = np.mean(IntX2)
+	IntX1[IntX1 == 0] = min(IntX1)
+	IntX2[IntX2 == 0] = min(IntX1)
 	comp = 100 * (( IntX1 - IntX2 ) / IntX1)
 	
 	plt.subplot(223, facecolor='#d8dcd6')
@@ -621,7 +623,6 @@ def TESPowAnalysis(plotfname):
     plt.show()
     os.system('spd-say "BING! BING! BING!"')	
 
-	
     return
 
 def TESPowPlot(plotfname):
