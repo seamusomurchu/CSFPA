@@ -18,13 +18,13 @@ mpath = '/home/james/Downloads/CS1FP241x241.dat'
 #mpath = '/home/james/Downloads/CS18319.dat'
 #mpath = '/home/james/Downloads/CS1_cal.dat'
 #mpath = '/home/james/Downloads/CS1.dat'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_CF.qb.pkl'
-#gfile = 'FPA_objs_CF1PTDofflinY_CF.qb.pkl'
+gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_CF.qb.pkl'
+gfile = 'FPA_objs_CF1PTDofflinY_CF.qb.pkl'
 #gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFtestLinX05m_CF.qb.pkl'
 #gfile = 'FPA_objs_CFtestLinX05m_CF.qb.pkl'
 #gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFtest_CF.qb.pkl'
 #gfile = 'FPA_objs_CFtest_CF.qb.pkl'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1linx_CF.qb'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1linx_CF.qb'
 def PoynPlot(fpath):
 	df = pd.read_csv(fpath, sep='\t', header=0)
 	
@@ -93,12 +93,12 @@ def MagXCompPlot(mpath, gqbfile):
 	
 	ax1 = fig.add_subplot(221, facecolor='#d8dcd6', aspect='equal')
 	ax1.set_title("MODAL FP Magnitude X")					   
-   	sc = ax1.scatter(df.X, df.Y, c=df.MagX, cmap='jet', marker='.')
+   	sc = ax1.scatter(df.X, df.Y, c=df.MagY, cmap='jet', marker='.')
 	cbar = fig.colorbar(sc, label="MagX")	
 	
 	ax2 = fig.add_subplot(222, facecolor='#d8dcd6', aspect='equal')
 	ax2.set_title("GRASP FP MagX (qbfile)")					   
-	sc = ax2.scatter(dfg.Xpos*1000, dfg.Ypos*1000, c=dfg.Yamp, cmap='jet', marker='.')	
+	sc = ax2.scatter(dfg.Xpos*1000, dfg.Ypos*1000, c=dfg.Xamp, cmap='jet', marker='.')	
 	cbar = fig.colorbar(sc, label="GRASP X Amp")	
 	
 	return
