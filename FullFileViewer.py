@@ -10,10 +10,15 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from CSFPA_dataIO import GridPowerCalc
+import numpy as np
 
 #gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1linx_CF.qb'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1PTDofflinY_CF.qb'
-gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_CF.qb.pkl'
+#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1linx_CF.qb.pkl'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1PTDofflinY_CF.qb'
+#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_CF.qb.pkl'
+gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1PTDofflinY_Mstyle.qb'
+gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_Mstyle.qb.pkl'
+
 
 def FullFileView(gqbfile, gpath):
 	#load file

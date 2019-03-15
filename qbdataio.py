@@ -141,26 +141,15 @@ def gdataform(dims, pdims, datastart, fname):
 	yy = np.linspace(ymin,ymax,ny) 
 
 	#could optimise this by just adding xx and yy to all_data
-	xy = ([])
-	for i in yy:
-		for j in xx:
-			ji = j,i
-			#xy = np.append(xy,ij,axis=0)
-			xy.append(ji)
+	X,Y = np.meshgrid(xx,yy)
+	pts = np.c_[Y.ravel(), X.ravel()] # technically backwards but produces correct format 5/03/19
 
-	xya = np.asarray(xy)
-	print "xya = ", xya	
-	#print len(xy)
-	#print xy[0]
-	print xya.shape
-	#print xya[1,]		
-	
 	datalen = len(xx)*len(yy)
 	zarr = np.zeros(int(datalen))
 	zarr = np.asarray(zarr)
 	
 	print "datastart", datastart, "fname, ", fname
-	data = np.loadtxt(fname, skiprows=datastart, delimiter='\t') #choose value dynamically... need to reshape this first, its ruining comb currently
+	data = np.loadtxt(fname, skiprows=datastart) #choose value dynamically... need to reshape this first, its ruining comb currently
 
 	#this puts data from file into array. could be optimsed by reading straight from file (data)
 	data_array = ([])
@@ -219,7 +208,7 @@ def gdataform(dims, pdims, datastart, fname):
 	all_data = all_data.T
 	
 	print "all_data shape", all_data.shape
-	print "xya shape", xya.shape
+	print "pts shape", pts.shape
 	print "zarr", zarr.shape
 	
 	#reformat xya to include zero arrays to match MODAL style
@@ -227,7 +216,7 @@ def gdataform(dims, pdims, datastart, fname):
 	zarrs = np.asarray((zarr,zarr)).T
 
 	#horizontally stack xy location array with data array
-	comb_data = np.hstack((xya,all_data))
+	comb_data = np.hstack((pts,all_data))
 	comb_data = np.hstack((zarrs,comb_data))
 	
 	#print "all_data = ", all_data, all_data.shape
