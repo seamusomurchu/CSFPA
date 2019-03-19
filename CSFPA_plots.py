@@ -24,7 +24,7 @@ def TotalIntensityPlot(plotfname):
     plt.axis('equal')
     plt.title("{} Bolometers Total Instensity".format(plotfname),fontsize=10)
     plt.subplot(122, facecolor='#d8dcd6')
-    plt.scatter(xycoords[:,0],xycoords[:,1], c=GPow, cmap='jet', marker='.', s=0.5)
+    plt.scatter(xycoords[:,0], xycoords[:,1], c=GPow, cmap='jet', marker='.', s=0.5)
     plt.axis([-60, 60, -60, 60])
     plt.axis('equal')
     plt.title("RAW - {}".format(filename),fontsize=10)
@@ -336,7 +336,7 @@ def TotIntCompPlot(pkl1,pkl2):
 			#print "radius test", np.sqrt(PixCenX[i]**2 + PixCenY[i]**2)
 			#plt.scatter(PixCenX[i]*1000,PixCenY[i]*1000, c=comp[i], cmap='jet',marker='s')
 
-	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='PiYG',marker='s',s=5)
+	plt.scatter(PixCenX*1000,PixCenY*1000, c=comp, cmap='RdPu',marker='s',s=5)
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)	
@@ -554,7 +554,7 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX1, cmap='jet',marker='s')
+	plt.scatter(xycoords[:,1], xycoords[:,0], c=IntX1, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl1",fontsize=10)
@@ -573,7 +573,7 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	comp = 100 * (( IntX1 - IntX2 ) / IntX1)
 	
 	plt.subplot(223, facecolor='#d8dcd6')
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='YlGnBu',marker='s')			
+	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='RdYlGn',marker='s')		#RdPu, 	YlGnBu
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)
