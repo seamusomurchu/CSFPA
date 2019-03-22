@@ -73,6 +73,7 @@ def GMYcut(mfile, gqbfile):
 	plt.show()
 						   
 	return
+
 def GMcuts(mfile, gqbfile):
 	#prep MODAL data
 	df = pd.read_csv(mfile, sep='\t', header=0)
@@ -121,6 +122,12 @@ def GMcuts(mfile, gqbfile):
 	
 	plt.legend(loc='upper left')
 	plt.show()
+	
+#	diff = gnorm-mnorm
+#	plt.figure()
+#	plt.title('difference plot')
+#	plt.plot(gnorm-mnorm)
+#	plt.show()
 						   
 	return
 
