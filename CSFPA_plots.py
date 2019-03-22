@@ -550,30 +550,32 @@ def FPComparisonPlotRAW(pkl1,pkl2):
 	#initially going to hardcode for intensity or magnitude
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl1)
 	IntX1 = IT/max(IT) # cx and co mixed
-	print max(IT)
-
+	print "pkl1 max intensity", max(IT)
+	
 	plt.figure(facecolor='xkcd:pale green')
 	plt.subplot(221, facecolor='#d8dcd6')
-	plt.scatter(xycoords[:,1], xycoords[:,0], c=IntX1, cmap='jet',marker='s')
+	plt.scatter(xycoords[:,1]*1000, xycoords[:,0]*1000, c=IntX1, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl1",fontsize=10)
 	
-	plt.subplot(222, facecolor='#d8dcd6')
+	#delete vars
+	del MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename
 	MagXarr, PhaXarr, ReXarr, ImXarr, MagYarr, PhaYarr, ReYarr, ImYarr, vtxcntarr, PixCenX, PixCenY, IntX, IntY, IntT, Ix, Iy, IT, xycoords, filename = RetrieveVars(pkl2)
 	IntX2 = IT/max(IT) # norm to first plot
-	print max(IT)
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=IntX2, cmap='jet',marker='s')
+	print "pkl2 max intensity", max(IT)
+	plt.subplot(222, facecolor='#d8dcd6')
+	plt.scatter(xycoords[:,0]*1000, xycoords[:,1]*1000, c=IntX2, cmap='jet',marker='s')
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("pkl2",fontsize=10)
 	#initialise comparison array and plot
-	IntX1[IntX1 == 0] = min(IntX1)
-	IntX2[IntX2 == 0] = min(IntX1)
-	comp = 100 * (( IntX1 - IntX2 ) / IntX1)
+	#IntX1[IntX1 == 0] = min(IntX1)
+	#IntX2[IntX2 == 0] = min(IntX1)
+	comp = (( IntX1 - IntX2 ) / IntX1) *100
 	
 	plt.subplot(223, facecolor='#d8dcd6')
-	plt.scatter(xycoords[:,0],xycoords[:,1], c=comp, cmap='RdYlGn',marker='s')		#RdPu, 	YlGnBu
+	plt.scatter(xycoords[:,0]*1000, xycoords[:,1]*1000, c=comp, cmap='RdYlGn',marker='s')		#RdPu, 	YlGnBu
 	plt.axis([-60, 60, -60, 60])
 	plt.axis('equal')
 	plt.title("Data Comparison",fontsize=10)
@@ -681,5 +683,9 @@ def PowDiffCalc(file1,file2):
 	plt.ylabel("% Difference")
 	plt.title("% difference between old/new CAL_SOU coordinates")
 	plt.show()
+	
+	return
+
+def FPCompV2(gpkl, modaldat):
 	
 	return

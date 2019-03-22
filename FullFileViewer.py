@@ -71,6 +71,8 @@ def GraspFull(gqbfile, gpath):
 def ModalFull(mpath):
 	#load file
 	df = pd.read_csv(mpath, sep='\t', header=0)
+	#load grid and pix area from normalisation
+	garea, parea = GetMODALGridPixArea(mpath)
 	#make figure
 	fig = plt.figure(facecolor='xkcd:pale green')
 	fig.suptitle("Full View: MODAL")	
@@ -107,6 +109,6 @@ def ModalFull(mpath):
 	#normalised total intensity	 
 	ax7 = fig.add_subplot(247, facecolor='#d8dcd6', aspect='equal')
 	ax7.set_title("Total Intensity: ZPoynting")					   
-	sc = ax7.scatter(df.X, df.Y, c=df.PoynZ, cmap='jet', marker='.')	
+	sc = ax7.scatter(df.X, df.Y, c=df.PoynZ*parea, cmap='jet', marker='.')	
 	cbar = fig.colorbar(sc, label="Watts")		
 	return
