@@ -10,10 +10,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-mfile = '/home/james/Downloads/CS1_861v3.dat'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/planar_grid_CF_Mstyle.qb'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1PTDofflinY_CF.qb'
-#mfile = '/home/james/Downloads/CS1FP241x241.dat'
+mfile = '/home/james/Downloads/MFPLinY.dat'
+gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinY_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/MCFLinY.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFbeamLinY_Mstyle.qb'
+
 
 def GMXcut(mfile, gqbfile):
 	#prep MODAL data
@@ -86,20 +88,6 @@ def GMcuts(mfile, gqbfile, ang):
 	dfg.Xpos = dfg.Xpos * 1000 # to get x axis same as modal in mm
 	dfg.Ypos = dfg.Ypos * 1000
 	
-	#setup Y values
-	xarr = np.asarray(df.X)
-	xarr = YvalFixer(df.X)
-	#normliase and log mag data
-	Ycutmampfilt = df.MagX[xarr == 0.0]
-	ymnorm = Ycutmampfilt / max(Ycutmampfilt)
-	ymnorm = np.asarray(ymnorm)
-	ymnorm = 20 * np.log(ymnorm) 
-	
-	Ycutgampfilt = dfg.Xamp[dfg.Xpos == 0.0]
-	ygnorm = Ycutgampfilt / max(Ycutgampfilt)
-	ygnorm = np.asarray(ygnorm)
-	ygnorm = 20 * np.log(ygnorm)
-
 	#setup X values
 	yarr = np.asarray(df.Y)
 	yarr = YvalFixer(df.Y)
@@ -112,40 +100,48 @@ def GMcuts(mfile, gqbfile, ang):
 	gampfilt = dfg.Xamp[dfg.Ypos == 0.0]
 	gnorm = gampfilt / max(gampfilt)
 	gnorm = np.asarray(gnorm)
-	gnorm = 20 * np.log(gnorm)
+	gnorm = 20 * np.log(gnorm)	
+	#setup Y values
+	xarr = np.asarray(df.X)
+	xarr = YvalFixer(df.X)
+	#normliase and log mag data
+	Ycutmampfilt = df.MagX[xarr == 0.0]
+	ymnorm = Ycutmampfilt / max(mampfilt)
+	ymnorm = np.asarray(ymnorm)
+	ymnorm = 20 * np.log(ymnorm) 
+	
+	Ycutgampfilt = dfg.Xamp[dfg.Xpos == 0.0]
+	ygnorm = Ycutgampfilt / max(gampfilt)
+	ygnorm = np.asarray(ygnorm)
+	ygnorm = 20 * np.log(ygnorm)
+
 	#setup 45 deg cut data - MODAL
 	anglevals = AngledArray(ang, dfg.Xpos)
 	
 	angmampfilt = df.MagX[dfg.Ypos == anglevals]
-	angmnorm = angmampfilt / max(angmampfilt)
+	angmnorm = angmampfilt / max(mampfilt)
 	angmnorm = np.asarray(angmnorm)
 	angmnorm = 20 * np.log(angmnorm) 
 	#45deg GRASP
 	anggampfilt = dfg.Xamp[dfg.Ypos == anglevals]
-	anggnorm = anggampfilt / max(anggampfilt)
+	anggnorm = anggampfilt / max(gampfilt)
 	anggnorm = np.asarray(anggnorm)
 	anggnorm = 20 * np.log(anggnorm)
 	#initialise plotting
 	plt.figure()
-	plt.title('0, 90, 45 deg cuts')
+	plt.title('0, 45, 90 deg cuts')
 	#plot X cut
-	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], gnorm, marker='.', label="GRASP X Cut")
-	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], mnorm, marker='.', c='r', label="MODAL X Cut")	
+	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], gnorm, linestyle='-', label="GRASP X Cut")
+	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], mnorm, linestyle='--', c='r', label="MODAL X Cut")	
 	#plot Y cut
-	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ygnorm, marker='.', c='g', label="GRASP Y Cut")
-	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ymnorm, marker='.', c='darkorange', label="MODAL Y Cut")
+	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ygnorm, linestyle='-', c='g', label="GRASP Y Cut")
+	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ymnorm, linestyle='--', c='darkorange', label="MODAL Y Cut")
 	#Do 45 deg cut
-	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], anggnorm, marker='.', c='mediumspringgreen', label="GRASP 45 deg")
-	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], angmnorm, marker='.', c='m', label="MODAL 45 deg")
+	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], anggnorm, linestyle='-', c='mediumspringgreen', label="GRASP 45 deg")
+	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], angmnorm, linestyle='--', c='m', label="MODAL 45 deg")
 	#set legend
 	plt.legend(loc='lower right')
 	plt.show()
-	
-#	diff = gnorm-mnorm
-#	plt.figure()
-#	plt.title('difference plot')
-#	plt.plot(gnorm-mnorm)
-#	plt.show()
 						   
 	return
 
@@ -238,6 +234,76 @@ def GXangcut(ang, gqbfile):
 	
 	
 	plt.legend(loc='upper left')
+	plt.show()
+						   
+	return
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1PTDofflinY_CF.qb'
+#mfile = '/home/james/Downloads/CS1FP241x241.dat'
+	
+def GMcutsRev(mfile, gqbfile, ang):
+	#prep MODAL data
+	df = pd.read_csv(mfile, sep='\t', header=0)
+	#prep GRASP
+	dfg = pd.read_csv(gqbfile, sep='\t', header=0)
+	#convert grasp to mm
+	dfg.Xpos = dfg.Xpos * 1000 # to get x axis same as modal in mm
+	dfg.Ypos = dfg.Ypos * 1000
+	
+	#setup Y values
+	xarr = np.asarray(df.X)
+	xarr = YvalFixer(df.X)
+	#normliase and log mag data
+	Ycutmampfilt = df.MagY[xarr == 0.0]
+	ymnorm = Ycutmampfilt / max(Ycutmampfilt)
+	ymnorm = np.asarray(ymnorm)
+	ymnorm = 20 * np.log(ymnorm) 
+	
+	Ycutgampfilt = dfg.Yamp[dfg.Xpos == 0.0]
+	ygnorm = Ycutgampfilt / max(Ycutgampfilt)
+	ygnorm = np.asarray(ygnorm)
+	ygnorm = 20 * np.log(ygnorm)
+
+	#setup X values
+	yarr = np.asarray(df.Y)
+	yarr = YvalFixer(df.Y)
+	
+	mampfilt = df.MagY[yarr == 0.0]
+	mnorm = mampfilt / max(mampfilt)
+	mnorm = np.asarray(mnorm)
+	mnorm = 20 * np.log(mnorm) 
+	
+	gampfilt = dfg.Yamp[dfg.Ypos == 0.0]
+	gnorm = gampfilt / max(gampfilt)
+	gnorm = np.asarray(gnorm)
+	gnorm = 20 * np.log(gnorm)
+	#setup 45 deg cut data - MODAL
+	anglevals = AngledArray(ang, dfg.Xpos)
+	
+	angmampfilt = df.MagY[dfg.Ypos == anglevals]
+	angmnorm = angmampfilt / max(angmampfilt)
+	angmnorm = np.asarray(angmnorm)
+	angmnorm = 20 * np.log(angmnorm) 
+	#45deg GRASP
+	anggampfilt = dfg.Yamp[dfg.Ypos == anglevals]
+	anggnorm = anggampfilt / max(anggampfilt)
+	anggnorm = np.asarray(anggnorm)
+	anggnorm = 20 * np.log(anggnorm)
+	#initialise plotting
+	plt.figure()
+	plt.title('0, 45, 90 deg cuts')
+	#plot X cut
+	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], gnorm, marker='.', label="GRASP X Cut")
+	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], mnorm, marker='.', c='r', label="MODAL X Cut")	
+	#plot Y cut
+	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ygnorm, marker='.', c='g', label="GRASP Y Cut")
+	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ymnorm, marker='.', c='darkorange', label="MODAL Y Cut")
+	#Do 45 deg cut
+	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], anggnorm, marker='.', c='mediumspringgreen', label="GRASP 45 deg")
+	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], angmnorm, marker='.', c='m', label="MODAL 45 deg")
+	#set legend
+	plt.legend(loc='lower center')
+#	plt.xlim([-25, 25])
+#	plt.ylim([-10, 0.5])
 	plt.show()
 						   
 	return
