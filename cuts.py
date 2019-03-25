@@ -12,8 +12,8 @@ import numpy as np
 import math
 mfile = '/home/james/Downloads/CS1_861v3.dat'
 gqbfile = '/home/james/files4CSFPA/Fromqbdataio/planar_grid_CF_Mstyle.qb'
-mfile = '/home/james/Downloads/CS1_861.dat'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinX_Mstyle.qb'
+#mfile = '/home/james/Downloads/CS1_861.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinX_Mstyle.qb'
 def GMXcut(mfile, gqbfile):
 	#prep MODAL data
 	df = pd.read_csv(mfile, sep='\t', header=0)
@@ -74,7 +74,7 @@ def GMYcut(mfile, gqbfile):
 						   
 	return
 
-def GMcuts(mfile, gqbfile):
+def GMcuts(mfile, gqbfile, ang):
 	#prep MODAL data
 	df = pd.read_csv(mfile, sep='\t', header=0)
 	#prep GRASP
@@ -109,8 +109,20 @@ def GMcuts(mfile, gqbfile):
 	gampfilt = dfg.Xamp[dfg.Ypos == 0.0]
 	gnorm = gampfilt / max(gampfilt)
 	gnorm = np.asarray(gnorm)
-	gnorm = 20 * np.log(gnorm)	
-
+	gnorm = 20 * np.log(gnorm)
+	#setup 45 deg cut data - MODAL
+	anglevals = AngledArray(ang, df.X)
+	
+	angmampfilt = df.MagX[yarr == anglevals]
+	angmnorm = angmampfilt / max(angmampfilt)
+	angmnorm = np.asarray(angmnorm)
+	angmnorm = 20 * np.log(angmnorm) 
+	#45deg GRASP
+	anggampfilt = dfg.Xamp[yarr == anglevals]
+	anggnorm = anggampfilt / max(anggampfilt)
+	anggnorm = np.asarray(anggnorm)
+	anggnorm = 20 * np.log(anggnorm)
+	#initialise plotting
 	plt.figure()
 	plt.title('X and Y Cuts')
 	#plot X cut
@@ -119,7 +131,10 @@ def GMcuts(mfile, gqbfile):
 	#plot Y cut
 	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], ygnorm, marker='.', c='g', label="GRASP Y Cut")
 	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], ymnorm, marker='.', c='darkorange', label="MODAL Y Cut")
-	
+	#Do 45 deg cut
+	plt.plot(dfg.Xpos[yarr == anglevals], anggnorm, marker='.', c='mediumspringgreen', label="GRASP 45 deg")
+	plt.plot(dfg.Xpos[yarr == anglevals], angmnorm, marker='.', c='m', label="MODAL 45 deg")
+	#set legend
 	plt.legend(loc='upper left')
 	plt.show()
 	
@@ -141,4 +156,49 @@ def YvalFixer(yarr):
 	
 			
 	return yarr
+
+def AngledArray(ang, arr):
+	"""pass in an array of x data, returns corresponding y data
+	converts degrees to radians
+	might to round float up from +- 59.99999999 to +- 60.0
+	NB due to the nature of the input xy data, x value should make sense for the angle
+	e.g. if you want an 85 degree cut, make sure the x value is sufficiently small
+	"""
+	ang = np.deg2rad(ang)
+	yarr = arr * np.tan(ang)
+	yarr = np.around(yarr, decimals=1)
+	return yarr
+
+def GMXangcut(ang, mfile, gqbfile):
+	#prep MODAL data
+	df = pd.read_csv(mfile, sep='\t', header=0)
+	#prep GRASP
+	dfg = pd.read_csv(gqbfile, sep='\t', header=0)
+	
+	dfg.Xpos = dfg.Xpos * 1000 # to get x axis same as modal in mm
+	dfg.Ypos = dfg.Ypos * 1000
+	
+	yarr = np.asarray(df.Y)
+	yarr = YvalFixer(df.Y)
+	
+	anglevals = AngledArray(ang, df.X)
+	
+	mampfilt = df.MagX[yarr == anglevals]
+	mnorm = mampfilt / max(mampfilt)
+	mnorm = np.asarray(mnorm)
+	mnorm = 20 * np.log(mnorm) 
+	
+	gampfilt = dfg.Xamp[yarr == anglevals]
+	gnorm = gampfilt / max(gampfilt)
+	gnorm = np.asarray(gnorm)
+	gnorm = 20 * np.log(gnorm)
+
+	plt.figure()
+	plt.title('45 deg X cut')
+	plt.plot(dfg.Xpos[yarr == anglevals], gnorm, marker='.', label="GRASP")
+	plt.plot(df.X[yarr == anglevals], mnorm, marker='.', c='r', label="MODAL")
+	plt.legend(loc='upper left')
+	plt.show()
+						   
+	return
 
