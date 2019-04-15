@@ -10,11 +10,23 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-mfile = '/home/james/Downloads/MFPLinY.dat'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinY_Mstyle.qb'
+#mfile = '/home/james/Downloads/MFPLinY.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinY_Mstyle.qb'
 
 #mfile = '/home/james/Downloads/MCFLinY.dat'
 #gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFbeamLinY_Mstyle.qb'
+
+mfile = '/home/james/Downloads/MODALbaselineCF1.dat'
+gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF1_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/MODALbaselineCF2.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF2_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/CF1modalbeam.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1graspbeam_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/CF2modalbeam.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF2graspbeam_Mstyle.qb'
 
 
 def GMXcut(mfile, gqbfile):
@@ -142,6 +154,11 @@ def GMcuts(mfile, gqbfile, ang):
 	#set legend
 	plt.legend(loc='lower right')
 	plt.show()
+	
+	difar = gnorm-mnorm
+	difar[difar > 100] = 0
+	print "G - M diff", max(abs(difar)), np.mean(difar)
+	print np.std(difar)
 						   
 	return
 
@@ -292,18 +309,21 @@ def GMcutsRev(mfile, gqbfile, ang):
 	plt.figure()
 	plt.title('0, 45, 90 deg cuts')
 	#plot X cut
-	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], gnorm, marker='.', label="GRASP X Cut")
-	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], mnorm, marker='.', c='r', label="MODAL X Cut")	
+	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], gnorm, linestyle='-', label="GRASP X Cut")
+	plt.plot(dfg.Xpos[dfg.Ypos == 0.0], mnorm, linestyle='--', c='r', label="MODAL X Cut")	
 	#plot Y cut
-	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ygnorm, marker='.', c='g', label="GRASP Y Cut")
-	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ymnorm, marker='.', c='darkorange', label="MODAL Y Cut")
+	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ygnorm, linestyle='-', c='g', label="GRASP Y Cut")
+	plt.plot(dfg.Ypos[dfg.Xpos == 0.0], ymnorm, linestyle='--', c='darkorange', label="MODAL Y Cut")
 	#Do 45 deg cut
-	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], anggnorm, marker='.', c='mediumspringgreen', label="GRASP 45 deg")
-	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], angmnorm, marker='.', c='m', label="MODAL 45 deg")
+	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], anggnorm, linestyle='-', c='mediumspringgreen', label="GRASP 45 deg")
+	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], angmnorm, linestyle='--', c='m', label="MODAL 45 deg")
 	#set legend
 	plt.legend(loc='lower center')
-#	plt.xlim([-25, 25])
-#	plt.ylim([-10, 0.5])
+	#mini analysis
+	difar = gnorm-mnorm
+	difar[difar > 100] = 0
+	print "G - M diff", max(abs(difar)), np.mean(difar)
+	print np.std(difar)
 	plt.show()
 						   
 	return
