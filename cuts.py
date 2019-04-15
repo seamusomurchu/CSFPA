@@ -22,8 +22,8 @@ gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF1_Mstyle.qb'
 #mfile = '/home/james/Downloads/MODALbaselineCF2.dat'
 #gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF2_Mstyle.qb'
 
-#mfile = '/home/james/Downloads/CF1modalbeam.dat'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1graspbeam_Mstyle.qb'
+mfile = '/home/james/Downloads/CF1modalbeam.dat'
+gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1graspbeam_Mstyle.qb'
 
 #mfile = '/home/james/Downloads/CF2modalbeam.dat'
 #gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF2graspbeam_Mstyle.qb'
@@ -319,11 +319,17 @@ def GMcutsRev(mfile, gqbfile, ang):
 	plt.plot(dfg.Xpos[dfg.Ypos == anglevals], angmnorm, linestyle='--', c='m', label="MODAL 45 deg")
 	#set legend
 	plt.legend(loc='lower center')
+	plt.show()
 	#mini analysis
 	difar = gnorm-mnorm
 	difar[difar > 100] = 0
 	print "G - M diff", max(abs(difar)), np.mean(difar)
 	print np.std(difar)
-	plt.show()
+	#difar[difar < 1.6] = 0
+	np.set_printoptions(suppress=True, precision=2)
+	#print difar
+	cutarr = np.concatenate((dfg.Xpos[dfg.Ypos == 0.0], difar))
+	print cutarr
+	np.savetxt('cutdata.txt', (dfg.Xpos[dfg.Ypos == 0.0], difar), fmt='%.2f', delimiter=',', axis=0)
 						   
 	return
