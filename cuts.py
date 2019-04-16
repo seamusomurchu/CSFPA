@@ -10,25 +10,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-#mfile = '/home/james/Downloads/MFPLinY.dat'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinY_Mstyle.qb'
-
-#mfile = '/home/james/Downloads/MCFLinY.dat'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFbeamLinY_Mstyle.qb'
-
-mfile = '/home/james/Downloads/MODALbaselineCF1.dat'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF1_Mstyle.qb'
-
-#mfile = '/home/james/Downloads/MODALbaselineCF2.dat'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF2_Mstyle.qb'
-
-mfile = '/home/james/Downloads/CF1modalbeam.dat'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1graspbeam_Mstyle.qb'
-
-#mfile = '/home/james/Downloads/CF2modalbeam.dat'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF2graspbeam_Mstyle.qb'
-
-
+#modified v2 new
+mfile = '/home/james/Downloads/CF1modalnewFP.dat'
+gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPCF1graspv2_Mstyle.qb'
+mfile = '/home/james/Downloads/CF2modalnewFP.dat'
+gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPCF2graspv2_Mstyle.qb'
+##old
+#mfile = '/home/james/Downloads/MODALbaselineCF1.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF1_Mstyle.qb'
 def GMXcut(mfile, gqbfile):
 	#prep MODAL data
 	df = pd.read_csv(mfile, sep='\t', header=0)
@@ -333,3 +322,20 @@ def GMcutsRev(mfile, gqbfile, ang):
 	np.savetxt('cutdata.txt', (dfg.Xpos[dfg.Ypos == 0.0], difar), fmt='%.2f', delimiter=',', axis=0)
 						   
 	return
+#mfile = '/home/james/Downloads/MFPLinY.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPLinY_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/MCFLinY.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFbeamLinY_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/MODALbaselineCF1.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF1_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/MODALbaselineCF2.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF2_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/CF1modalbeam.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF1graspbeam_Mstyle.qb'
+
+#mfile = '/home/james/Downloads/CF2modalbeam.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CF2graspbeam_Mstyle.qb'
