@@ -11,29 +11,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from CSFPA_dataIO import GetMODALGridPixArea, GridPowerCalc, RetrieveVars
-mpath = '/home/james/Downloads/CS1_861.dat'
-mpath = '/home/james/Downloads/CS1_861v3.dat'
-#mpath = '/home/james/Downloads/CS1FP241x241.dat'
-#mpath = '/home/james/Downloads/CS1_250219.dat'
-#mpath = '/home/james/Downloads/CS1 0.05 m.dat'
-#mpath = '/home/james/Downloads/CS18319.dat'
-#mpath = '/home/james/Downloads/CS1_cal.dat'
-#mpath = '/home/james/Downloads/CS1.dat'
-#mpath = '/home/james/Downloads/CS1beam.dat'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_planar_grid_CF_CF.qb.pkl'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_Mstyle.qb.pkl'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_CF.qb.pkl'
-#gfile = 'FPA_objs_CF1PTDofflinY_CF.qb.pkl'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFtestLinX05m_CF.qb.pkl'
-#gfile = 'FPA_objs_CFtestLinX05m_CF.qb.pkl'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFtest_CF.qb.pkl'
-#gfile = 'FPA_objs_CFtest_CF.qb.pkl'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFtestLinX05m_CF.qb'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/planar_grid_CF_CF.qb'
-gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_planar_grid_CF_Mstyle.qb.pkl'
-#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFliny241_Mstyle.qb.pkl'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/planar_grid_CF_Mstyle.qb'
-#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFliny241_Mstyle.qb'
+
+mpath = '/home/james/Downloads/CF1modalnewFP.dat'
+gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_FPCF1graspv2_Mstyle.qb.pkl'
 
 def PoynPlot(fpath):
 	df = pd.read_csv(fpath, sep='\t', header=0)
@@ -129,3 +109,26 @@ def MagXCompPlot(mpath, gqbfile):
 	sc = ax3.scatter(df.X, df.Y, c=comp, cmap='jet', marker='.') #Both useful PiYG & RdPu
 	cbar = fig.colorbar(sc, label="Difference")	
 	return
+#mpath = '/home/james/Downloads/CS1_861.dat'
+#mpath = '/home/james/Downloads/CS1_861v3.dat'
+##mpath = '/home/james/Downloads/CS1FP241x241.dat'
+##mpath = '/home/james/Downloads/CS1_250219.dat'
+##mpath = '/home/james/Downloads/CS1 0.05 m.dat'
+##mpath = '/home/james/Downloads/CS18319.dat'
+##mpath = '/home/james/Downloads/CS1_cal.dat'
+##mpath = '/home/james/Downloads/CS1.dat'
+##mpath = '/home/james/Downloads/CS1beam.dat'
+##gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_planar_grid_CF_CF.qb.pkl'
+##gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_Mstyle.qb.pkl'
+##gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CF1PTDofflinY_CF.qb.pkl'
+##gfile = 'FPA_objs_CF1PTDofflinY_CF.qb.pkl'
+##gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFtestLinX05m_CF.qb.pkl'
+##gfile = 'FPA_objs_CFtestLinX05m_CF.qb.pkl'
+##gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFtest_CF.qb.pkl'
+##gfile = 'FPA_objs_CFtest_CF.qb.pkl'
+##gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFtestLinX05m_CF.qb'
+##gqbfile = '/home/james/files4CSFPA/Fromqbdataio/planar_grid_CF_CF.qb'
+#gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_planar_grid_CF_Mstyle.qb.pkl'
+##gpath = '/home/james/files4CSFPA/qbdataioOUTFILES/FPA_objs_CFliny241_Mstyle.qb.pkl'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/planar_grid_CF_Mstyle.qb'
+##gqbfile = '/home/james/files4CSFPA/Fromqbdataio/CFliny241_Mstyle.qb'

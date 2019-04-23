@@ -65,8 +65,8 @@ def getXYcoords(f, vtxs):
             #x y are modal data points
             #x1,y1,x2,y2 are detector geometry points
             if f.endswith((".qb")):
-				x = j[0]
-				y = j[1]
+				x = j[1]
+				y = j[0]
             else:				
                 x = j[0]
                 y = j[1]

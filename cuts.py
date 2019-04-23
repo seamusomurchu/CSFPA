@@ -13,8 +13,8 @@ import math
 #modified v2 new
 mfile = '/home/james/Downloads/CF1modalnewFP.dat'
 gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPCF1graspv2_Mstyle.qb'
-mfile = '/home/james/Downloads/CF2modalnewFP.dat'
-gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPCF2graspv2_Mstyle.qb'
+#mfile = '/home/james/Downloads/CF2modalnewFP.dat'
+#gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FPCF2graspv2_Mstyle.qb'
 ##old
 #mfile = '/home/james/Downloads/MODALbaselineCF1.dat'
 #gqbfile = '/home/james/files4CSFPA/Fromqbdataio/FP_baseline_CF1_Mstyle.qb'
@@ -146,9 +146,15 @@ def GMcuts(mfile, gqbfile, ang):
 	
 	difar = gnorm-mnorm
 	difar[difar > 100] = 0
-	print "G - M diff", max(abs(difar)), np.mean(difar)
-	print np.std(difar)
-						   
+	print "G - M diff, max, mean: ", max(abs(difar)), np.mean(difar)
+	print "sdev: ", np.std(difar)
+	#save difference data to temparray for inspection of max dB location
+#	np.set_printoptions(suppress=True, precision=2)
+#	#print difar
+#	cutarr = np.concatenate((dfg.Xpos[dfg.Ypos == 0.0], difar))
+#	print cutarr
+#	np.savetxt('cutdata.txt', (dfg.Xpos[dfg.Ypos == 0.0], difar), fmt='%.2f', delimiter=',')
+	   
 	return
 
 def YvalFixer(yarr):
