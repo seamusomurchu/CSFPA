@@ -66,7 +66,7 @@ def GraspFull(gqbfile, gpath):
 	sc = ax7.scatter(df.Xpos, df.Ypos, c=GPow, cmap='jet', marker='.')	
 	cbar = fig.colorbar(sc, label="Watts")	
    	return
-   
+
 
 def ModalFull(mpath):
 	#load file
